@@ -1,0 +1,72 @@
+imports:
+    - { resource: parameters.yml }
+
+services:
+    myersware.mapusers.controller.main:
+        class: myersware\mapusers\controller\main
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            
+    myersware.mapusers.controller.xhr:
+        class: myersware\mapusers\controller\mainxhr
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@request'
+            - '@user'
+            - '@dbal.conn'
+
+    myersware.mapusers.service:
+        class: myersware\mapusers\service
+        arguments:
+            - '@user'
+            - '%myersware.mapusers.tables.mapusers%'
+
+    myersware.mapusers.listener:
+        class: myersware\mapusers\event\main_listener
+        arguments:
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '%core.php_ext%'
+        tags:
+            - { name: event.listener }
+
+    myersware.mapusers.command.mapusers:
+        class: myersware\mapusers\console\command\mapusers
+        arguments:
+            - '@user'
+        tags:
+            - { name: console.command }
+
+    myersware.mapusers.cron.task.mapusers:
+        class: myersware\mapusers\cron\task\mapusers
+        arguments:
+            - '@config'
+        calls:
+            - [set_name, [cron.task.mapusers]]
+        tags:
+            - { name: cron.task }
+
+    myersware.mapusers.notification.type.mapusers:
+        class: myersware\mapusers\notification\type\mapusers
+        scope: prototype # scope MUST be prototype for this to work!
+        arguments:
+            - '@user_loader'
+            - '@dbal.conn'
+            - '@cache.driver'
+            - '@user'
+            - '@auth'
+            - '@config'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%tables.notification_types%'
+            - '%tables.notifications%'
+            - '%tables.user_notifications%'
+        calls:
+            - [set_controller_helper, ['@controller.helper']]
+        tags:
+            - { name: notification.type }

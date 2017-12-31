@@ -1,0 +1,7 @@
+myersware_mapusers_controller_xhr:
+    path: /mapusers/xhr/{name}
+    defaults: { _controller: myersware.mapusers.controller.xhr:handle }
+    
+myersware_mapusers_controller_main:
+    path: /mapusers/{name}
+    defaults: { _controller: myersware.mapusers.controller.main:handle }

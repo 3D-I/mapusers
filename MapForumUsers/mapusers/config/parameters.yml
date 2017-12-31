@@ -1,0 +1,3 @@
+parameters:
+    myersware.mapusers.keys.googleapi: 'AIzaSyCpNAKZ2ZxhuRiTIQcjDdWz1LTZBQ0G4zI'
+    myersware.mapusers.tables.mapusers: '%core.table_prefix%mapusers_geolocation'

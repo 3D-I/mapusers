@@ -7,18 +7,15 @@
  * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
-
-if (!defined('IN_PHPBB'))
-{
-	exit;
+if (! defined ( 'IN_PHPBB' )) {
+	exit ();
 }
 
-if (empty($lang) || !is_array($lang))
-{
-	$lang = array();
+if (empty ( $lang ) || ! is_array ( $lang )) {
+	$lang = array ();
 }
 
-$lang = array_merge($lang, array(
-	'CLI_MAPUSERS'			=> 'Gcmap console',
-	'CLI_MAPUSERS_HELLO'	=> 'Hello user',
-));
+$lang = array_merge ( $lang, array (
+		'CLI_MAPUSERS' => 'Gcmap console',
+		'CLI_MAPUSERS_HELLO' => 'Hello user' 
+) );

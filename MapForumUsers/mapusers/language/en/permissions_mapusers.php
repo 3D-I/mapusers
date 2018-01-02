@@ -1,24 +1,22 @@
 <?php
 /**
-*
-* Mapusers extension for the phpBB Forum Software package.
-*
-* @copyright (c) 2018 myersware <https://www.myersware.com>
-* @license GNU General Public License, version 2 (GPL-2.0)
-*
-*/
+ *
+ * Mapusers extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2018 myersware <https://www.myersware.com>
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ */
 
 /**
-* DO NOT CHANGE
-*/
-if (!defined('IN_PHPBB'))
-{
-	exit;
+ * DO NOT CHANGE
+ */
+if (! defined ( 'IN_PHPBB' )) {
+	exit ();
 }
 
-if (empty($lang) || !is_array($lang))
-{
-	$lang = array();
+if (empty ( $lang ) || ! is_array ( $lang )) {
+	$lang = array ();
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -37,6 +35,6 @@ if (empty($lang) || !is_array($lang))
 // â€™ Â» â€œ â€� â€¦
 //
 
-$lang = array_merge($lang, array(
-	'ACL_U_MAPUSERS_VIEW'		=> 'Can view users map',
-));
+$lang = array_merge ( $lang, array (
+		'ACL_U_MAPUSERS_VIEW' => 'Can view users map' 
+) );

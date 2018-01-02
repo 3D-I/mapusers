@@ -7,18 +7,15 @@
  * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
-
-if (!defined('IN_PHPBB'))
-{
-	exit;
+if (! defined ( 'IN_PHPBB' )) {
+	exit ();
 }
 
-if (empty($lang) || !is_array($lang))
-{
-	$lang = array();
+if (empty ( $lang ) || ! is_array ( $lang )) {
+	$lang = array ();
 }
 
-$lang = array_merge($lang, array(
-	'MCP_MAPUSERS'				=> 'Front',
-	'MCP_MAPUSERS_TITLE'		=> 'Mapusers Module',
-));
+$lang = array_merge ( $lang, array (
+		'MCP_MAPUSERS' => 'Front',
+		'MCP_MAPUSERS_TITLE' => 'Mapusers Module' 
+) );

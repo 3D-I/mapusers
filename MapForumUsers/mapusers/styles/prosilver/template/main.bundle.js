@@ -60,17 +60,14 @@ var AppComponent = (function () {
         this.http = http;
         this.__zone = __zone;
         this.mapCenter = [];
+        this.foundUser = false;
         this.selectOptions = [];
         this.selectedLocation = 0;
         this.searchRadius = 50;
-        this.loadCrashers = '../assets/crashers.json';
-        this.loadGetUser = '/app.php/mapusers/xhr/getUser';
-        this.loadRemote = '/app.php/mapusers/xhr/searchUsers';
-        this.email = 'myersjj@gmail.com';
-        this.password = 'jjm2580J';
+        this.loadSearchUser = '/app.php/mapusers/xhr/searchUser';
+        this.loadSearchLocation = '/app.php/mapusers/xhr/searchLocation';
         this.positions = [];
         this.items = [];
-        this.title = 'Liberation Unleashed Members';
         this.lat = 20.0;
         this.lng = -20.0;
         this.info = {
@@ -84,8 +81,7 @@ var AppComponent = (function () {
             iconUrl: null,
             label: null,
         };
-        this.getUser();
-        this.reload(null);
+        this.doSearchUser();
     }
     AppComponent.prototype.log = function (event, str) {
         if (event instanceof MouseEvent) {
@@ -123,14 +119,20 @@ var AppComponent = (function () {
         }
         console.log('mapCenter=', this.mapCenter);
     };
-    AppComponent.prototype.getUser = function () {
+    AppComponent.prototype.doSearchUser = function () {
         var _this = this;
+        this.searchErrorMessage = null;
         var headers = new __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["c" /* HttpHeaders */]()
             .set('X-Requested-With', 'XMLHttpRequest')
             .set('responseType', 'json');
         // console.log('added headers=', headers);
-        var geocoder = new google.maps.Geocoder();
-        this.http.get(this.loadGetUser, { headers: headers })
+        var params = null;
+        if (this.searchUser) {
+            params = new __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["d" /* HttpParams */]().set('name', this.searchUser)
+                .set('radius', String(this.searchRadius));
+            console.log('doSearchUser params=', params);
+        }
+        this.http.get(this.loadSearchUser, { params: params, headers: headers })
             .subscribe(function (data) {
             console.log('getUser data=', data);
             _this.info = data[0];
@@ -146,32 +148,54 @@ var AppComponent = (function () {
                 _this.mapCenter = [_this.lat, _this.lng];
             }
             console.log('mapCenter=', _this.mapCenter);
+            _this.foundUser = true;
+            _this.doSearchLocation(_this.searchLocation);
+        }, function (err) {
+            if (err.error instanceof Error) {
+                console.log('doSearchUser client error=', err);
+                _this.searchErrorMessage = err['error']['message'];
+                _this.foundUser = false;
+            }
+            else {
+                console.log('doSearchUser server error=', err);
+                _this.searchErrorMessage = err['error']['message'];
+                _this.foundUser = false;
+            }
         });
     };
-    AppComponent.prototype.reload = function (center) {
+    /**
+     * @param center - either null or an address
+     */
+    AppComponent.prototype.doSearchLocation = function (center) {
         var _this = this;
         console.log('reloading from Remote..., center=', center);
+        this.searchErrorMessage = null;
         this.clearLocations();
         var items;
         var headers = new __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["c" /* HttpHeaders */]()
             .set('X-Requested-With', 'XMLHttpRequest')
             .set('responseType', 'json');
         // console.log('added headers=', headers);
-        var geocoder = new google.maps.Geocoder();
         var params = null;
         if (center) {
-            params = new __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["d" /* HttpParams */]().set('lat', center.geometry.location.lat())
-                .set('lng', center.geometry.location.lng())
+            params = new __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["d" /* HttpParams */]().set('address', center)
                 .set('radius', String(this.searchRadius));
             console.log('reload params=', params);
         }
-        this.http.get(this.loadRemote, { params: params, headers: headers })
+        this.http.get(this.loadSearchLocation, { params: params, headers: headers })
             .subscribe(function (data) {
             console.log('remote data=', data);
             items = data;
             _this.users = items;
-            var _loop_1 = function (item) {
+            // console.log('load items=', items);
+            var firstItem = true;
+            for (var _i = 0, items_1 = items; _i < items_1.length; _i++) {
+                var item = items_1[_i];
                 // console.log('insert new ', item);
+                if (firstItem) {
+                    _this.mapCenter = [Number(item.geo.latitude), Number(item.geo.longitude)];
+                    firstItem = false;
+                }
                 _this.getIconUrl(item);
                 _this.info = { id: item.id,
                     geo: { latitude: Number(item.geo.latitude),
@@ -184,86 +208,16 @@ var AppComponent = (function () {
                     iconUrl: item.iconUrl,
                     label: null,
                 };
-                if (!item.geo.latitude) {
-                    var _positions_1 = _this.positions;
-                    geocoder.geocode({ address: item.location }, function (results, status) {
-                        if (status === google.maps.GeocoderStatus.OK) {
-                            console.log('loc=', item.location, ' status=', status, ' results=', results);
-                            item.geo.latitude = Number(results[0].geometry.location.lat());
-                            item.geo.longitude = Number(results[0].geometry.location.lng());
-                            _positions_1.push({ latlng: [Number(item.geo.latitude), Number(item.geo.longitude)], item: item });
-                        }
-                        else {
-                            alert(this.location + ' not found');
-                        }
-                    });
-                }
-                else {
+                if (item.geo.latitude) {
                     _this.positions.push({ latlng: [Number(item.geo.latitude), Number(item.geo.longitude)], item: item });
                 }
                 _this.selectOptions.push([item.id, item.forum, item.iconUrl]);
                 // this.updateItem(item, true);
-            };
-            // console.log('load items=', items);
-            for (var _i = 0, items_1 = items; _i < items_1.length; _i++) {
-                var item = items_1[_i];
-                _loop_1(item);
             }
             // console.log('selectOptions=', this.selectOptions);
         }, function (error) {
             console.log('loadRemote error=', error);
-        });
-    };
-    AppComponent.prototype.reloadLocal = function () {
-        var _this = this;
-        console.log('reloading from Local...');
-        this.clearLocations();
-        var items;
-        var geocoder = new google.maps.Geocoder();
-        this.http.get(this.loadCrashers, { responseType: 'json' })
-            .subscribe(function (data) {
-            items = data;
-            _this.users = items;
-            console.log('load items=', items);
-            var _loop_2 = function (item) {
-                // console.log('insert new ', item);
-                _this.getIconUrl(item);
-                _this.info = { id: item.id,
-                    geo: { latitude: Number(item.geo.latitude),
-                        longitude: Number(item.geo.longitude) },
-                    display: true,
-                    name: item.name,
-                    color: item.color,
-                    forum_name: item.forum,
-                    location: item.location,
-                    iconUrl: item.iconUrl,
-                    label: null,
-                };
-                if (!item.latitude) {
-                    var _positions_2 = _this.positions;
-                    geocoder.geocode({ address: item.location }, function (results, status) {
-                        if (status === google.maps.GeocoderStatus.OK) {
-                            console.log('loc=', item.location, ' status=', status, ' results=', results);
-                            item.geo.latitude = Number(results[0].geometry.location.lat());
-                            item.geo.longitude = Number(results[0].geometry.location.lng());
-                            _positions_2.push({ latlng: [Number(item.geo.latitude), Number(item.geo.longitude)], item: item });
-                        }
-                        else {
-                            alert(this.location + ' not found');
-                        }
-                    });
-                }
-                else {
-                    _this.positions.push({ latlng: [Number(item.latitude), Number(item.longitude)], item: item });
-                }
-                _this.selectOptions.push([item.id, item.forum, item.iconUrl]);
-                // this.updateItem(item, true);
-            };
-            for (var _i = 0, _a = items.crashers; _i < _a.length; _i++) {
-                var item = _a[_i];
-                _loop_2(item);
-            }
-            // console.log('selectOptions=', this.selectOptions);
+            _this.searchErrorMessage = error['error']['message'];
         });
     };
     AppComponent.prototype.markerClick = function (marker) {
@@ -306,31 +260,11 @@ var AppComponent = (function () {
         this.selectOptions = [];
         this.selectOptions.push([0, 'none', '']);
     };
-    AppComponent.prototype.searchLocations = function () {
-        var address = this.searchLocation;
-        var geocoder = new google.maps.Geocoder();
-        var _this = this;
-        geocoder.geocode({ address: address }, function (results, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
-                console.log('loc=', address, ' status=', status, ' results=', results);
-                _this.searchNearLocations.call(_this, results[0], status);
-            }
-            else {
-                alert(address + ' not found');
-            }
-        });
-    };
-    AppComponent.prototype.searchNearLocations = function (center, status) {
-        console.log('center=', center);
-        this.mapCenter = [Number(center.geometry.location.lat()),
-            Number(center.geometry.location.lng())];
-        this.reload(center);
-    };
     AppComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-gm',
             styles: [__webpack_require__("../../../../../src/app/app.component.css")],
-            template: "\n          <h1>Forum User Locations</h1>\n          <div>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchLocation\" placeholder=\"Search location\">\n            </mat-form-field>\n             Radius(km)={{ searchRadius }}\n            <mat-slider [(ngModel)]=\"searchRadius\" (input)=\"this.onSliderChange($event)\"\n                min=\"100\" max=\"20000\" step=\"100\" value=\"200\">\n            </mat-slider>\n            <md-slider></md-slider>\n            <button mat-button (click)=\"searchLocations(this.searchNearLocations)\" [disabled]=\"!searchLocation || !searchRadius\">\n                Search\n            </button>\n            <div>\n                <mat-form-field *ngIf=\"selectOptions\">\n                    <mat-select placeholder=\"Pick a user\" name=\"selectUser\"\n                        [(ngModel)]=\"selectedLocation\" (selectionChange)=\"showLocation()\">\n                        <mat-option *ngFor=\"let opt of selectOptions\" [value]=\"opt[0]\">\n                            {{ opt[1] }}\n                        </mat-option>\n                    </mat-select>\n                </mat-form-field>\n            </div>\n          <ngui-map center=\"{{ mapCenter }}\"\n            [zoom]=\"3\"\n            [zoomControlOptions]=\"{position: 'TOP_CENTER'}\"\n            [fullscreenControl]=\"true\"\n            [fullscreenControlOptions]=\"{position: 'TOP_CENTER'}\"\n            (click)=\"log($event)\"\n            [scrollwheel]=\"false\">\n            <marker *ngFor=\"let pos of positions\" [position]=\"pos.latlng\"\n                    [icon]=\"pos.item.icon\" [label]=\"pos.item.label\"\n                     (click)=\"clicked($event, pos)\">\n                <info-window id=\"iw-{{ pos.item.id }}\">\n                    <div *ngIf=\"info.display\">\n                        {{ info.forum_name }} @ lat: {{ info.geo.latitude }}, lng: {{ info.geo.longitude }}\n                    </div>\n                </info-window>\n            </marker>\n          </ngui-map>\n\n          "
+            template: "\n          <h1>Forum User Locations</h1>\n          <div>\n            <div><h2 *ngIf=\"searchErrorMessage\" >Search error {{ searchErrorMessage }}</h2>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchUser\" placeholder=\"User forum name\">\n                <mat-error *ngIf=\"searchErrorMessage\">{{searchErrorMessage}}</mat-error>\n            </mat-form-field>\n            <div  class=\"button-row\">\n            <button mat-raised-button color=\"primary\"\n                    (click)=\"doSearchUser()\" [disabled]=\"!searchUser || !searchRadius\">\n                Search by forum user name\n            </button>\n            </div>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchLocation\" placeholder=\"Search location\">\n                <mat-error *ngIf=\"searchErrorMessage\">{{searchErrorMessage}}</mat-error>\n            </mat-form-field>\n            <div  class=\"button-row\">\n            <button mat-raised-button color=\"primary\"\n                    (click)=\"doSearchLocation(this.searchLocation)\" [disabled]=\"!searchLocation || !searchRadius\">\n                Search by location\n            </button>\n            </div>\n            <div>\n             Radius(km)={{ searchRadius }}\n            <mat-slider [(ngModel)]=\"searchRadius\" (input)=\"this.onSliderChange($event)\"\n                min=\"100\" max=\"20000\" step=\"100\" value=\"200\">\n            </mat-slider>\n            </div>\n            <h2>Search near selected user</h2>\n            <div>\n                <mat-form-field *ngIf=\"selectOptions\">\n                    <mat-select placeholder=\"Pick a user\" name=\"selectUser\"\n                        [(ngModel)]=\"selectedLocation\" (selectionChange)=\"showLocation()\">\n                        <mat-option *ngFor=\"let opt of selectOptions\" [value]=\"opt[0]\">\n                            {{ opt[1] }}\n                        </mat-option>\n                    </mat-select>\n                </mat-form-field>\n            </div>\n          <ngui-map center=\"{{ mapCenter }}\"\n            [zoom]=\"3\"\n            [zoomControlOptions]=\"{position: 'TOP_CENTER'}\"\n            [fullscreenControl]=\"true\"\n            [fullscreenControlOptions]=\"{position: 'TOP_CENTER'}\"\n            (click)=\"log($event)\"\n            [scrollwheel]=\"false\">\n            <marker *ngFor=\"let pos of positions\" [position]=\"pos.latlng\"\n                    [icon]=\"pos.item.icon\" [label]=\"pos.item.label\"\n                     (click)=\"clicked($event, pos)\">\n                <info-window id=\"iw-{{ pos.item.id }}\">\n                    <div *ngIf=\"info.display\">\n                        {{ info.forum_name }} @ lat: {{ info.geo.latitude }}, lng: {{ info.geo.longitude }}\n                    </div>\n                </info-window>\n            </marker>\n          </ngui-map>\n\n          "
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */],
             __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */]])

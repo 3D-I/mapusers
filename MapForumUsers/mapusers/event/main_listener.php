@@ -119,7 +119,7 @@ class main_listener implements EventSubscriberInterface {
 		$sql_ary = $event ['sql_ary']; // ignore
 		$user_id = $event ['user_id'];
 		$user_row = $event ['user_row']; // regular user profile data
-		update_geo_data ( $user_id, $user_row, $cp_data );
+		$this->update_geo_data ( $user_id, $user_row, $cp_data );
 	}
 	
 	/**
@@ -130,19 +130,38 @@ class main_listener implements EventSubscriberInterface {
 	 *        	Event object
 	 */
 	public function get_geo_data_ucp($event) {
+		global $user;
+		
 		$cp_data = $event ['cp_data']; // custom profile data
 		$data = $event ['data']; // user profile data
 		$sql_ary = $event ['sql_ary']; // ignore
-		update_geo_data ( $data ['user_id'], $data, $cp_data );
+		$this->update_geo_data ( $user->data ['user_id'], $data, $cp_data );
 	}
+	
 	function update_geo_data($user_id, $user_row, $cp_data) {
-		print_r ( 'update_geo_data' );
+		global $config; 
+		global $table_prefix;
+		global $db;
+		
+		$this->table_prefix = $table_prefix;
+		$this->db = $db;
+		
+		// print_r ( 'update_geo_data' );
+		// determine if location field is modified. If not, return with no action
+		$this->user->get_profile_fields ( $user_id );
+		if ($this->user->profile_fields['pf_phpbb_location'] == $cp_data ['pf_phpbb_location']) {
+			return;
+		}
 		if ($cp_data ['pf_phpbb_location'] == null) {
 			// delete any geo data for this user
+			$delete = 'DELETE FROM ' . $table_prefix . 'mapusers_geolocation ' .
+					'WHERE user_id=' . $user_id;
+			$this->db->sql_query ( $delete );
 		} else {
 			// insert/update geo data for this user
 			$api_key = $config ['mapusers_gapi_key'];
-			$address = urlencode ( $cp_data ['pf_phpbb_location'] );
+			$addressRaw = $cp_data ['pf_phpbb_location'];
+			$address = urlencode ( $addressRaw );
 			// $key = urlencode("************");
 			$ch = curl_init ();
 			$options = array (
@@ -162,9 +181,22 @@ class main_listener implements EventSubscriberInterface {
 			$data = json_decode ( $response, true ); // insert in the database
 			                                      // from geometry.location.lat/lng
 			$geocode = $data ['results'] [0];
-			$insert = 'INSERT INTO ' . $table_prefix . 'mapusers_geolocation ' . '(user_id, latitude, longitude, is_valid, location) VALUES(' . $row ['user_id'] . ', ' . $geocode ['geometry'] ['location'] ['lat'] . ', ' . $geocode ['geometry'] ['location'] ['lng'] . ',' . '1, "' . $db->sql_escape ( $address ) . '")';
-			$insert_result = $this->db->sql_query ( $insert );
-			$this->db->sql_freeresult ( $insert_result );
+			// record may be in database, so try UPDATE first. If that fails, do INSERT
+			$update = 'UPDATE ' . $table_prefix . 'mapusers_geolocation ' .
+					' SET latitude=' . $geocode ['geometry'] ['location'] ['lat'] .
+					', longitude=' . $geocode ['geometry'] ['location'] ['lng'] .
+					', location="' . $db->sql_escape ( $addressRaw ) . '"' .
+					', is_valid=1 WHERE user_id=' . $user_id;
+			$this->db->sql_query ( $update );
+			if (!$this->db->sql_affectedrows())
+			{
+				$insert = 'INSERT INTO ' . $table_prefix . 'mapusers_geolocation ' . 
+						'(user_id, latitude, longitude, is_valid, location) VALUES(' . $user_id . ', ' . 
+				$geocode ['geometry'] ['location'] ['lat'] . ', ' . 
+				$geocode ['geometry'] ['location'] ['lng'] . ',' . '1, "' . 
+				$db->sql_escape ( $addressRaw ) . '")';
+				$this->db->sql_query ( $insert );
+			}
 		}
 	}
 }

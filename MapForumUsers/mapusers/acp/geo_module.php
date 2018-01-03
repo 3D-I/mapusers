@@ -35,11 +35,13 @@ class geo_module {
 				trigger_error ( 'FORM_INVALID', E_USER_WARNING );
 			}
 			// do geocoding for users needing it
-			$sql = 'SELECT p.user_id, p.pf_phpbb_location FROM ' . $table_prefix . 'profile_fields_data p ' . 'LEFT JOIN ' . $table_prefix . 'mapusers_geolocation g ' . 'ON p.user_id=g.user_id' . ' WHERE g.user_id IS NULL';
+			$sql = 'SELECT p.user_id, p.pf_phpbb_location FROM ' . $table_prefix . 'profile_fields_data p ' . 
+				'LEFT JOIN ' . $table_prefix . 'mapusers_geolocation g ' . 'ON p.user_id=g.user_id' . 
+				' WHERE g.is_valid=0 OR g.user_id IS NULL';
 			$result = $this->db->sql_query ( $sql );
 			while ( $row = $this->db->sql_fetchrow ( $result ) ) {
-				$address = urlencode ( $row ['pf_phpbb_location'] );
-				// $key = urlencode("************");
+				$addressRaw = $row ['pf_phpbb_location'];
+				$address = urlencode ( $addressRaw );
 				$ch = curl_init ();
 				$options = array (
 						CURLOPT_URL => "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $api_key,
@@ -58,11 +60,23 @@ class geo_module {
 				$data = json_decode ( $response, true ); // insert in the database
 				                                         // from geometry.location.lat/lng
 				$geocode = $data ['results'] [0];
-				$insert = 'INSERT INTO ' . $table_prefix . 'mapusers_geolocation ' . '(user_id, latitude, longitude, location, is_valid) VALUES(' . $row ['user_id'] . ', ' . $geocode ['geometry'] ['location'] ['lat'] . ', ' . $geocode ['geometry'] ['location'] ['lng'] . ', "' . $db->sql_escape ( $address ) . '", ' . '1)';
-				$insert_result = $this->db->sql_query ( $insert );
-				$this->db->sql_freeresult ( $insert_result );
+				// record may be in database, so try UPDATE first. If that fails, do INSERT
+				$update = 'UPDATE ' . $table_prefix . 'mapusers_geolocation ' .
+						' SET latitude=' . $geocode ['geometry'] ['location'] ['lat'] .
+						', longitude=' . $geocode ['geometry'] ['location'] ['lng'] .
+						', location="' . $db->sql_escape ( $addressRaw ) . '"' .
+						', is_valid=1 WHERE user_id=' . $row ['user_id'];
+				$this->db->sql_query ( $update );
+				if (!$this->db->sql_affectedrows())
+				{
+					$insert = 'INSERT INTO ' . $table_prefix . 'mapusers_geolocation ' . 
+						'(user_id, latitude, longitude, location, is_valid) VALUES(' . 
+						$row ['user_id'] . ', ' . $geocode ['geometry'] ['location'] ['lat'] . ', ' . 
+						$geocode ['geometry'] ['location'] ['lng'] . ', "' . 
+						$db->sql_escape ( $addressRaw ) . '", ' . '1)';
+						$this->db->sql_query ( $insert );
+				}
 			}
-			$this->db->sql_freeresult ( $result );
 		}
 		// display count of users without locations, with location and no geocode and with both.
 		
@@ -72,13 +86,17 @@ class geo_module {
 		$no_location = $row ['c'];
 		$this->db->sql_freeresult ( $result );
 		
-		$sql = 'SELECT COUNT(*) as c FROM ' . $table_prefix . 'profile_fields_data p ' . 'LEFT JOIN ' . $table_prefix . 'mapusers_geolocation g ' . 'ON p.user_id=g.user_id' . ' WHERE g.user_id IS NULL';
+		$sql = 'SELECT COUNT(*) as c FROM ' . $table_prefix . 'profile_fields_data p ' . 
+			'LEFT JOIN ' . $table_prefix . 'mapusers_geolocation g ' . 'ON p.user_id=g.user_id' . 
+			' WHERE g.is_valid=0 OR g.user_id IS NULL';
 		$result = $this->db->sql_query ( $sql );
 		$row = $this->db->sql_fetchrow ( $result );
 		$loc_no_geo = $row ['c'];
 		$this->db->sql_freeresult ( $result );
 		
-		$sql = 'SELECT count(*) as c FROM ' . $table_prefix . 'profile_fields_data p, ' . $table_prefix . 'mapusers_geolocation g' . ' WHERE g.user_id=p.user_id AND p.pf_phpbb_location is not null';
+		$sql = 'SELECT count(*) as c FROM ' . $table_prefix . 'profile_fields_data p, ' . 
+				$table_prefix . 'mapusers_geolocation g' . 
+			' WHERE g.is_valid=1 AND g.user_id=p.user_id AND p.pf_phpbb_location is not null';
 		$result = $this->db->sql_query ( $sql );
 		$row = $this->db->sql_fetchrow ( $result );
 		$loc_geo = $row ['c'];

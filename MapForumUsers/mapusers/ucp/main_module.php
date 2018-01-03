@@ -18,13 +18,9 @@ class main_module {
 	function main($id, $mode) {
 		global $db, $request, $template, $user;
 		
-		$this->tpl_name = 'ucp_mapusers';
+		$this->tpl_name = 'ucp_mapusers_body';
 		$this->page_title = $user->lang ( 'UCP_MAPUSERS_TITLE' );
 		add_form_key ( 'myersware/mapusers' );
-		
-		$data = array (
-				'user_mapusers' => $request->variable ( 'user_mapusers', $user->data ['user_mapusers'] ) 
-		);
 		
 		if ($request->is_set_post ( 'submit' )) {
 			if (! check_form_key ( 'myersware/mapusers' )) {
@@ -42,7 +38,7 @@ class main_module {
 		}
 		
 		$template->assign_vars ( array (
-				'S_USER_MAPUSERS' => $data ['user_mapusers'],
+				'S_USER_MAPUSERS' => 'none',
 				'S_UCP_ACTION' => $this->u_action 
 		) );
 	}

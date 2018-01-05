@@ -42,6 +42,9 @@ class main_listener implements EventSubscriberInterface {
 	/** @var string phpEx */
 	protected $php_ext;
 	
+	/* @var \myersware\mapusers\geocoder\geocoder */
+	protected $geocoder;
+	
 	/**
 	 * Constructor
 	 *
@@ -53,12 +56,16 @@ class main_listener implements EventSubscriberInterface {
 	 *        	User object
 	 * @param string $php_ext
 	 *        	phpEx
+	 * @param \myersware\mapusers\geocoder\geocoder $geocoder
+	 *          Geocoder object
 	 */
-	public function __construct(\phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, $php_ext) {
+	public function __construct(\phpbb\controller\helper $helper, \phpbb\template\template $template, 
+			\phpbb\user $user, $php_ext, \myersware\mapusers\geocoder\geocoder $geocoder) {
 		$this->helper = $helper;
 		$this->template = $template;
 		$this->user = $user;
 		$this->php_ext = $php_ext;
+		$this->geocoder = $geocoder;
 	}
 	
 	/**
@@ -119,7 +126,8 @@ class main_listener implements EventSubscriberInterface {
 		$sql_ary = $event ['sql_ary']; // ignore
 		$user_id = $event ['user_id'];
 		$user_row = $event ['user_row']; // regular user profile data
-		$this->update_geo_data ( $user_id, $user_row, $cp_data );
+		// $this->update_geo_data ( $user_id, $user_row, $cp_data );
+		$this->geocoder->update_geo_data( $user_id, $user_row, $cp_data );
 	}
 	
 	/**
@@ -135,68 +143,7 @@ class main_listener implements EventSubscriberInterface {
 		$cp_data = $event ['cp_data']; // custom profile data
 		$data = $event ['data']; // user profile data
 		$sql_ary = $event ['sql_ary']; // ignore
-		$this->update_geo_data ( $user->data ['user_id'], $data, $cp_data );
-	}
-	
-	function update_geo_data($user_id, $user_row, $cp_data) {
-		global $config; 
-		global $table_prefix;
-		global $db;
-		
-		$this->table_prefix = $table_prefix;
-		$this->db = $db;
-		
-		// print_r ( 'update_geo_data' );
-		// determine if location field is modified. If not, return with no action
-		$this->user->get_profile_fields ( $user_id );
-		if ($this->user->profile_fields['pf_phpbb_location'] == $cp_data ['pf_phpbb_location']) {
-			return;
-		}
-		if ($cp_data ['pf_phpbb_location'] == null) {
-			// delete any geo data for this user
-			$delete = 'DELETE FROM ' . $table_prefix . 'mapusers_geolocation ' .
-					'WHERE user_id=' . $user_id;
-			$this->db->sql_query ( $delete );
-		} else {
-			// insert/update geo data for this user
-			$api_key = $config ['mapusers_gapi_key'];
-			$addressRaw = $cp_data ['pf_phpbb_location'];
-			$address = urlencode ( $addressRaw );
-			// $key = urlencode("************");
-			$ch = curl_init ();
-			$options = array (
-					CURLOPT_URL => "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $api_key,
-					CURLOPT_RETURNTRANSFER => 1,
-					CURLOPT_TIMEOUT => 100,
-					CURLOPT_SSL_VERIFYHOST => 0,
-					CURLOPT_SSL_VERIFYPEER => false 
-			);
-			curl_setopt_array ( $ch, $options );
-			$response = curl_exec ( $ch );
-			if (curl_error ( $ch )) {
-				echo 'error:' . curl_error ( $ch );
-			}
-			curl_close ( $ch );
-			// print_r($response);
-			$data = json_decode ( $response, true ); // insert in the database
-			                                      // from geometry.location.lat/lng
-			$geocode = $data ['results'] [0];
-			// record may be in database, so try UPDATE first. If that fails, do INSERT
-			$update = 'UPDATE ' . $table_prefix . 'mapusers_geolocation ' .
-					' SET latitude=' . $geocode ['geometry'] ['location'] ['lat'] .
-					', longitude=' . $geocode ['geometry'] ['location'] ['lng'] .
-					', location="' . $db->sql_escape ( $addressRaw ) . '"' .
-					', is_valid=1 WHERE user_id=' . $user_id;
-			$this->db->sql_query ( $update );
-			if (!$this->db->sql_affectedrows())
-			{
-				$insert = 'INSERT INTO ' . $table_prefix . 'mapusers_geolocation ' . 
-						'(user_id, latitude, longitude, is_valid, location) VALUES(' . $user_id . ', ' . 
-				$geocode ['geometry'] ['location'] ['lat'] . ', ' . 
-				$geocode ['geometry'] ['location'] ['lng'] . ',' . '1, "' . 
-				$db->sql_escape ( $addressRaw ) . '")';
-				$this->db->sql_query ( $insert );
-			}
-		}
+		// $this->update_geo_data ( $user->data ['user_id'], $data, $cp_data );
+		$this->geocoder->update_geo_data( $user_id, $user_row, $cp_data );
 	}
 }

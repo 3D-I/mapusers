@@ -24,6 +24,12 @@ services:
         arguments:
             - '@user'
             - '%myersware.mapusers.tables.mapusers%'
+            
+    myersware.mapusers.geocoder:
+        class: myersware\mapusers\geocoder\geocoder
+        arguments:
+            - '@user'
+            - '@config'
 
     myersware.mapusers.listener:
         class: myersware\mapusers\event\main_listener
@@ -32,6 +38,7 @@ services:
             - '@template'
             - '@user'
             - '%core.php_ext%'
+            - '@myersware.mapusers.geocoder'
         tags:
             - { name: event.listener }
 

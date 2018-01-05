@@ -72,6 +72,7 @@ class mainxhr {
 		
 		$username = $this->request->variable ( 'name', $this->user->data ['username'] );
 		$q_radius = $this->request->variable ( 'radius', 100 );
+		$q_limit = $this->request->variable ( 'limit', 20 );
 		$address = $this->request->variable ( 'address', '' );
 		$geo_data = null;
 		if ($name == 'searchUser' || $address == '') {
@@ -97,10 +98,10 @@ class mainxhr {
 		}
 		
 		if ($name == 'searchUser') {
-			return $this->selectUsers ( $address, $geo_data, $q_radius );
+			return $this->selectUsers ( $address, $geo_data, $q_radius, $q_limit );
 		} elseif ($name == 'searchLocation') {
 			if ($address == '') {
-				return $this->selectUsers ( $address, $geo_data, $q_radius );
+				return $this->selectUsers ( $address, $geo_data, $q_radius, $q_limit );
 			}
 			// geocode input address for search
 			// $key = urlencode("************");
@@ -130,12 +131,12 @@ class mainxhr {
 					$geocode ['geometry'] ['location'] ['lng'] 
 			);
 			// var_dump($geo_data);
-			return $this->selectUsers ( $address, $geo_data, $q_radius );
+			return $this->selectUsers ( $address, $geo_data, $q_radius, $q_limit );
 		} else {
 			throw new \phpbb\exception\http_exception ( 404, 'NOT_FOUND' );
 		}
 	}
-	function selectUsers($address, $p_geo_data, $q_radius) {
+	function selectUsers($address, $p_geo_data, $q_radius, $q_limit) {
 		global $table_prefix;
 		global $phpbb_container;
 		$geo_table = $phpbb_container->getParameter ( 'myersware.mapusers.tables.mapusers' );
@@ -147,7 +148,7 @@ class mainxhr {
 			if (! $q_lat) {
 				throw new \phpbb\exception\http_exception ( 500, "Location " . $address . " NOT_FOUND: invalid geo_data=" . var_dump ( $p_geo_data ) );
 			}
-			$sql = 'SELECT u.user_id, u.username, p.pf_phpbb_location, gr.group_colour, l.latitude, l.longitude, ( 3959 * acos( cos( radians(' . $q_lat . ') ) * cos( radians( l.latitude ) ) * cos( radians( l.longitude ) - radians(' . $q_lng . ') ) + sin( radians(' . $q_lat . ') ) * sin( radians( l.latitude ) ) ) ) AS distance ' . 'FROM  ' . $geo_table . ' g, ' . $table_prefix . 'users u, ' . $table_prefix . 'groups gr' . ', ' . $table_prefix . 'profile_fields_data p, ' . $table_prefix . 'mapusers_geolocation l' . ' WHERE g.user_id=u.user_id AND p.user_id=g.user_id AND l.user_id=u.user_id AND u.group_id=gr.group_id AND g.is_valid=1' . ' HAVING distance < ' . $q_radius . ' ORDER BY distance LIMIT 0 , 20';
+			$sql = 'SELECT u.user_id, u.username, p.pf_phpbb_location, gr.group_colour, l.latitude, l.longitude, ( 3959 * acos( cos( radians(' . $q_lat . ') ) * cos( radians( l.latitude ) ) * cos( radians( l.longitude ) - radians(' . $q_lng . ') ) + sin( radians(' . $q_lat . ') ) * sin( radians( l.latitude ) ) ) ) AS distance ' . 'FROM  ' . $geo_table . ' g, ' . $table_prefix . 'users u, ' . $table_prefix . 'groups gr' . ', ' . $table_prefix . 'profile_fields_data p, ' . $table_prefix . 'mapusers_geolocation l' . ' WHERE g.user_id=u.user_id AND p.user_id=g.user_id AND l.user_id=u.user_id AND u.group_id=gr.group_id AND g.is_valid=1' . ' HAVING distance < ' . $q_radius . ' ORDER BY distance LIMIT 0 , ' . $q_limit;
 			$result = $this->db->sql_query ( $sql );
 			while ( $row = $this->db->sql_fetchrow ( $result ) ) {
 				array_push ( $locations, array (

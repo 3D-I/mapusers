@@ -17,16 +17,22 @@ class geo_module {
 	public $page_title;
 	public $tpl_name;
 	public $u_action;
+	
 	public function main($id, $mode) {
 		global $config, $request, $template, $user, $db;
 		global $table_prefix;
 		
 		$this->table_prefix = $table_prefix;
 		$this->db = $db;
-		$api_key = $config ['mapusers_gapi_key'];
+		$this->limit = $config ['mapusers_geocode_limit'];
+		$this->api_key = $config ['mapusers_gapi_key'];
 		$user->add_lang_ext ( 'myersware/mapusers', 'common' );
 		$this->tpl_name = 'acp_geocode_body';
 		$this->page_title = $user->lang ( 'Map Forum Geocode Users' );
+		$this->updateCount = 0;
+		
+		// test call to geocoder class
+		
 		
 		add_form_key ( 'myersware_mapusers_geocode' );
 		
@@ -34,17 +40,22 @@ class geo_module {
 			if (! check_form_key ( 'myersware_mapusers_geocode' )) {
 				trigger_error ( 'FORM_INVALID', E_USER_WARNING );
 			}
+			if (!$this->api_key || !$this->limit) {
+				trigger_error ( 'GAPI_KEY_INVALID', E_USER_WARNING );
+			}
 			// do geocoding for users needing it
 			$sql = 'SELECT p.user_id, p.pf_phpbb_location FROM ' . $table_prefix . 'profile_fields_data p ' . 
 				'LEFT JOIN ' . $table_prefix . 'mapusers_geolocation g ' . 'ON p.user_id=g.user_id' . 
-				' WHERE g.is_valid=0 OR g.user_id IS NULL';
+				' WHERE g.is_valid=0 OR g.user_id IS NULL LIMIT ' . $this->limit;
 			$result = $this->db->sql_query ( $sql );
+			$rowCount = 0;
 			while ( $row = $this->db->sql_fetchrow ( $result ) ) {
+				$rowCount++;
 				$addressRaw = $row ['pf_phpbb_location'];
 				$address = urlencode ( $addressRaw );
 				$ch = curl_init ();
 				$options = array (
-						CURLOPT_URL => "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $api_key,
+						CURLOPT_URL => "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $this->api_key,
 						CURLOPT_RETURNTRANSFER => 1,
 						CURLOPT_TIMEOUT => 100,
 						CURLOPT_SSL_VERIFYHOST => 0,
@@ -77,6 +88,7 @@ class geo_module {
 						$this->db->sql_query ( $insert );
 				}
 			}
+			$this->updateCount = $rowCount;
 		}
 		// display count of users without locations, with location and no geocode and with both.
 		
@@ -102,12 +114,20 @@ class geo_module {
 		$loc_geo = $row ['c'];
 		$this->db->sql_freeresult ( $result );
 		
+		if (!$this->api_key || !$this->limit || $loc_no_geo == 0) {
+			$submit = false;
+		} else {
+			$submit = true;
+		}
 		$template->assign_vars ( array (
 				'U_ACTION' => $this->u_action,
 				'U_GEO_STATUS' => 'Geocoding status',
 				'U_NO_LOC' => $no_location,
 				'U_LOC_NO_GEO' => $loc_no_geo,
-				'U_LOC_GEO' => $loc_geo 
+				'U_LOC_GEO' => $loc_geo,
+				'U_LOC_LIMIT' => $this->limit,
+				'U_LOC_UPDATES' => $this->updateCount,
+				'U_LOC_SUBMIT' => ($submit ? '1': '0')
 		) );
 	}
 }

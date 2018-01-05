@@ -64,6 +64,7 @@ var AppComponent = (function () {
         this.selectOptions = [];
         this.selectedLocation = 0;
         this.searchRadius = 50;
+        this.searchLimit = 20;
         this.loadSearchUser = '/app.php/mapusers/xhr/searchUser';
         this.loadSearchLocation = '/app.php/mapusers/xhr/searchLocation';
         this.positions = [];
@@ -139,7 +140,8 @@ var AppComponent = (function () {
         var params = null;
         if (this.searchUser) {
             params = new __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["d" /* HttpParams */]().set('name', this.searchUser)
-                .set('radius', String(this.searchRadius));
+                .set('radius', String(this.searchRadius))
+                .set('limit', String(this.searchLimit));
             console.log('doSearchUser params=', params);
         }
         this.http.get(this.loadSearchUser, { params: params, headers: headers })
@@ -189,7 +191,8 @@ var AppComponent = (function () {
         var params = null;
         if (center) {
             params = new __WEBPACK_IMPORTED_MODULE_2__angular_common_http__["d" /* HttpParams */]().set('address', center)
-                .set('radius', String(this.searchRadius));
+                .set('radius', String(this.searchRadius))
+                .set('limit', String(this.searchLimit));
             console.log('reload params=', params);
         }
         this.http.get(this.loadSearchLocation, { params: params, headers: headers })
@@ -241,6 +244,10 @@ var AppComponent = (function () {
         console.log(event);
         console.log('radius=', this.searchRadius);
     };
+    AppComponent.prototype.onLimitChange = function (event) {
+        console.log(event);
+        console.log('limit=', this.searchLimit);
+    };
     AppComponent.prototype.markerClicked = function (event, marker) {
         // console.log('clicked marker event=', event, ', marker=', marker);  // marker is {latlng, item}
         this.infoWindow.geo = { latitude: event.target.getPosition().lat(),
@@ -280,7 +287,7 @@ var AppComponent = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-gm',
             styles: [__webpack_require__("../../../../../src/app/app.component.css")],
-            template: "\n          <h1>Forum User Locations</h1>\n          <div>\n            <div><h2 *ngIf=\"searchErrorMessage\" >Search error {{ searchErrorMessage }}</h2>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchUser\" placeholder=\"User forum name\">\n                <mat-error *ngIf=\"searchErrorMessage\">{{searchErrorMessage}}</mat-error>\n            </mat-form-field>\n            <div  class=\"button-row\">\n            <button mat-raised-button color=\"primary\"\n                    (click)=\"doSearchUser()\" [disabled]=\"!searchUser || !searchRadius\">\n                Search by forum user name\n            </button>\n            </div>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchLocation\" placeholder=\"Search location\">\n                <mat-error *ngIf=\"searchErrorMessage\">{{searchErrorMessage}}</mat-error>\n            </mat-form-field>\n            <div  class=\"button-row\">\n            <button mat-raised-button color=\"primary\"\n                    (click)=\"doSearchLocation(this.searchLocation)\" [disabled]=\"!searchLocation || !searchRadius\">\n                Search by location\n            </button>\n            </div>\n            <div>\n             Radius(km)={{ searchRadius }}\n            <mat-slider [(ngModel)]=\"searchRadius\" (input)=\"this.onSliderChange($event)\"\n                min=\"100\" max=\"20000\" step=\"100\" value=\"200\">\n            </mat-slider>\n            </div>\n            <h2>Search near selected user</h2>\n            <div>\n                <mat-form-field *ngIf=\"selectOptions\">\n                    <mat-select placeholder=\"Pick a user\" name=\"selectUser\"\n                        [(ngModel)]=\"selectedLocation\" (selectionChange)=\"showLocation()\">\n                        <mat-option *ngFor=\"let opt of selectOptions\" [value]=\"opt[0]\">\n                            {{ opt[1] }}\n                        </mat-option>\n                    </mat-select>\n                </mat-form-field>\n            </div>\n          <ngui-map center=\"{{ mapCenter }}\"\n            [zoom]=\"3\"\n            [zoomControlOptions]=\"{position: 'TOP_CENTER'}\"\n            [fullscreenControl]=\"true\"\n            [fullscreenControlOptions]=\"{position: 'TOP_CENTER'}\"\n            (click)=\"log($event)\"\n            [scrollwheel]=\"false\">\n            <marker *ngFor=\"let pos of positions\" [position]=\"pos.latlng\"\n                    [icon]=\"pos.item.icon\" [label]=\"pos.item.label\"\n                     (click)=\"markerClicked($event, pos)\">\n            </marker>\n            <info-window id=\"iw-user\">\n                <div *ngIf=\"infoWindow.display\">\n                    <a href=\"{{ infoWindow.profileUrl }}\">{{ infoWindow.forum_name }} @ {{ infoWindow.location }}</a>\n                </div>\n            </info-window>\n          </ngui-map>\n\n          "
+            template: "\n          <h1>Forum User Locations</h1>\n          <div>\n            <div><h2 *ngIf=\"searchErrorMessage\" >Search error {{ searchErrorMessage }}</h2>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchUser\" placeholder=\"User forum name\">\n                <mat-error *ngIf=\"searchErrorMessage\">{{searchErrorMessage}}</mat-error>\n            </mat-form-field>\n            <div  class=\"button-row\">\n            <button mat-raised-button color=\"primary\"\n                    (click)=\"doSearchUser()\" [disabled]=\"!searchUser || !searchRadius\">\n                Search by forum user name\n            </button>\n            </div>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchLocation\" placeholder=\"Search location\">\n                <mat-error *ngIf=\"searchErrorMessage\">{{searchErrorMessage}}</mat-error>\n            </mat-form-field>\n            <div  class=\"button-row\">\n            <button mat-raised-button color=\"primary\"\n                    (click)=\"doSearchLocation(this.searchLocation)\" [disabled]=\"!searchLocation || !searchRadius\">\n                Search by location\n            </button>\n            </div>\n            <div>\n             Radius(km)={{ searchRadius }}\n            <mat-slider [(ngModel)]=\"searchRadius\" (input)=\"this.onSliderChange($event)\"\n                min=\"100\" max=\"20000\" step=\"100\" value=\"200\">\n            </mat-slider>\n            </div>\n            <div>\n             Limit to {{ searchLimit }} closest:\n            <mat-slider [(ngModel)]=\"searchLimit\" (input)=\"this.onLimitChange($event)\"\n                min=\"10\" max=\"100\" step=\"10\" value=\"20\">\n            </mat-slider>\n            </div>\n            <h2>Search near selected user</h2>\n            <div>\n                <mat-form-field *ngIf=\"selectOptions\">\n                    <mat-select placeholder=\"Pick a user\" name=\"selectUser\"\n                        [(ngModel)]=\"selectedLocation\" (selectionChange)=\"showLocation()\">\n                        <mat-option *ngFor=\"let opt of selectOptions\" [value]=\"opt[0]\">\n                            {{ opt[1] }}\n                        </mat-option>\n                    </mat-select>\n                </mat-form-field>\n            </div>\n          <ngui-map center=\"{{ mapCenter }}\"\n            [zoom]=\"3\"\n            [zoomControlOptions]=\"{position: 'TOP_CENTER'}\"\n            [fullscreenControl]=\"true\"\n            [fullscreenControlOptions]=\"{position: 'TOP_CENTER'}\"\n            (click)=\"log($event)\"\n            [scrollwheel]=\"false\">\n            <marker *ngFor=\"let pos of positions\" [position]=\"pos.latlng\"\n                    [icon]=\"pos.item.icon\" [label]=\"pos.item.label\"\n                     (click)=\"markerClicked($event, pos)\">\n            </marker>\n            <info-window id=\"iw-user\">\n                <div *ngIf=\"infoWindow.display\">\n                    <a href=\"{{ infoWindow.profileUrl }}\">{{ infoWindow.forum_name }} @ {{ infoWindow.location }}</a>\n                </div>\n            </info-window>\n          </ngui-map>\n\n          "
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */],
             __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */]])

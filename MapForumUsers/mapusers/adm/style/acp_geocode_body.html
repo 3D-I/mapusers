@@ -10,18 +10,24 @@
 		</dt>
 		<dd>{U_NO_LOC}</dd>
 		<dt>
-			<label>Users with location, no geocode{L_COLON}</label>
-		</dt>
-		<dd>{U_LOC_NO_GEO}</dd>
-		<dt>
 			<label>Users with location and geocode{L_COLON}</label>
 		</dt>
 		<dd>{U_LOC_GEO}</dd>
+		<dt>
+            <label>Users with location, no geocode{L_COLON}</label>
+        </dt>
+        <dd>{U_LOC_NO_GEO}</dd>
 	</dl>
+	<!-- IF U_LOC_UPDATES -->
+	<div>
+	   <h3>Updated {U_LOC_UPDATES} locations.</h3>
+	</div>
+	<!-- ENDIF -->
 </div>
+<!-- IF U_LOC_SUBMIT -->
 <div>
+    <h3>Update geocoding for limit of {U_LOC_LIMIT} users with location and no geocode.</h3>
 	<form id="acp_board" method="post" action="{U_ACTION}">
-
 		<fieldset class="submit-buttons">
 			<input class="button1" type="submit" id="submit" name="submit"
 				value="{L_SUBMIT}" />&nbsp; {S_FORM_TOKEN}
@@ -29,4 +35,5 @@
 
 	</form>
 </div>
+<!-- ENDIF -->
 <!-- INCLUDE overall_footer.html -->

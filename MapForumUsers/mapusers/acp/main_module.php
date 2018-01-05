@@ -31,13 +31,15 @@ class main_module {
 				trigger_error ( 'FORM_INVALID', E_USER_WARNING );
 			}
 			
-			$config->set ( 'mapusers_gapi_key', $request->variable ( 'gapi_key', 'invalid' ) );
+			$config->set ( 'mapusers_gapi_key', $request->variable ( 'gapi_key', '' ) );
+			$config->set ( 'mapusers_geocode_limit', $request->variable ( 'geocode_limit', 25 ) );
 			trigger_error ( $user->lang ( 'MAPUSERS_SETTING_SAVED' ) . adm_back_link ( $this->u_action ) );
 		}
 		
 		$template->assign_vars ( array (
 				'U_ACTION' => $this->u_action,
-				'GAPI_KEY' => $config ['mapusers_gapi_key'] 
+				'GAPI_KEY' => $config ['mapusers_gapi_key'],
+				'GEOCODE_LIMIT' => $config['mapusers_geocode_limit']
 		) );
 	}
 }

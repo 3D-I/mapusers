@@ -38,125 +38,90 @@ class geocoder {
 	public function __construct(\phpbb\user $user, 
 			\phpbb\config\config $config)
 	{
+		global $table_prefix;
+		global $db;
+		
 		$this->user = $user;
 		$this->config = $config;
-	}
-	
-	public function update($id, $mode) {
-		global $config, $request, $template, $user, $db;
-		global $table_prefix;
-		
 		$this->table_prefix = $table_prefix;
 		$this->db = $db;
-		$this->limit = 25;
-		$api_key = $config ['mapusers_gapi_key'];
+		$this->api_key = $config ['mapusers_gapi_key'];
+		$this->limit = $config['mapusers_geocode_limit'];
+	}
+	
+	public function update() {
+
 		$this->updateCount = 0;
 
 		// do geocoding for users needing it
-		$sql = 'SELECT p.user_id, p.pf_phpbb_location FROM ' . $table_prefix . 'profile_fields_data p ' . 
-			'LEFT JOIN ' . $table_prefix . 'mapusers_geolocation g ' . 'ON p.user_id=g.user_id' . 
+		$sql = 'SELECT p.user_id, p.pf_phpbb_location FROM ' . $this->table_prefix . 'profile_fields_data p ' . 
+				'LEFT JOIN ' . $this->table_prefix . 'mapusers_geolocation g ' . 'ON p.user_id=g.user_id' . 
 			' WHERE g.is_valid=0 OR g.user_id IS NULL LIMIT ' . $this->limit;
 		$result = $this->db->sql_query ( $sql );
 		$rowCount = 0;
 		while ( $row = $this->db->sql_fetchrow ( $result ) ) {
 			$rowCount++;
-			$addressRaw = $row ['pf_phpbb_location'];
-			$address = urlencode ( $addressRaw );
-			$ch = curl_init ();
-			$options = array (
-					CURLOPT_URL => "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $api_key,
-					CURLOPT_RETURNTRANSFER => 1,
-					CURLOPT_TIMEOUT => 100,
-					CURLOPT_SSL_VERIFYHOST => 0,
-					CURLOPT_SSL_VERIFYPEER => false 
-			);
-			curl_setopt_array ( $ch, $options );
-			$response = curl_exec ( $ch );
-			if (curl_error ( $ch )) {
-				echo 'error:' . curl_error ( $ch );
-			}
-			curl_close ( $ch );
-			// print_r($response);
-			$data = json_decode ( $response, true ); // insert in the database
-			                                         // from geometry.location.lat/lng
-			$geocode = $data ['results'] [0];
-			// record may be in database, so try UPDATE first. If that fails, do INSERT
-			$update = 'UPDATE ' . $table_prefix . 'mapusers_geolocation ' .
-					' SET latitude=' . $geocode ['geometry'] ['location'] ['lat'] .
-					', longitude=' . $geocode ['geometry'] ['location'] ['lng'] .
-					', location="' . $db->sql_escape ( $addressRaw ) . '"' .
-					', is_valid=1 WHERE user_id=' . $row ['user_id'];
-			$this->db->sql_query ( $update );
-			if (!$this->db->sql_affectedrows())
-			{
-				$insert = 'INSERT INTO ' . $table_prefix . 'mapusers_geolocation ' . 
-					'(user_id, latitude, longitude, location, is_valid) VALUES(' . 
-					$row ['user_id'] . ', ' . $geocode ['geometry'] ['location'] ['lat'] . ', ' . 
-					$geocode ['geometry'] ['location'] ['lng'] . ', "' . 
-					$db->sql_escape ( $addressRaw ) . '", ' . '1)';
-					$this->db->sql_query ( $insert );
-			}
+			$location = $row ['pf_phpbb_location'];
+			$this->update_user_geodata($row['user_id'], $location);
 		}
 		$this->updateCount = $rowCount;
+		return $this->updateCount;
 	}
 	
-	public function update_geo_data($user_id, $user_row, $cp_data) {
-		global $config;
-		global $table_prefix;
-		global $db;
-		
-		$this->table_prefix = $table_prefix;
-		$this->db = $db;
-		
-		// print_r ( 'update_geo_data' );
-		// determine if location field is modified. If not, return with no action
-		$this->user->get_profile_fields ( $user_id );
-		if ($this->user->profile_fields['pf_phpbb_location'] == $cp_data ['pf_phpbb_location']) {
-			return;
+	public function geocode_user($location) {
+		$address = urlencode ( $location );
+		$geocode_url = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $this->api_key;
+		$ch = curl_init ();
+		$options = array (
+				CURLOPT_URL => $geocode_url,
+				CURLOPT_RETURNTRANSFER => 1,
+				CURLOPT_TIMEOUT => 100,
+				CURLOPT_SSL_VERIFYHOST => 0,
+				CURLOPT_SSL_VERIFYPEER => false
+		);
+		curl_setopt_array ( $ch, $options );
+		$response = curl_exec ( $ch );
+		$httpcode = curl_getinfo ( $ch, CURLINFO_HTTP_CODE );
+		if ($ce = curl_errno ( $ch ) || $httpcode != 200) {
+			throw new \phpbb\exception\http_exception ( 500, "Location " . $address . " curl failed=" . curl_strerror ( $ce ) . " " . $httpcode . " url=" . $geocode_url );
 		}
-		if ($cp_data ['pf_phpbb_location'] == null) {
+		curl_close ( $ch );
+		// var_dump('geocode curl=' . $response);
+		$data = json_decode ( $response, true );
+		// from geometry.location.lat/lng
+		$geocode = $data ['results'] [0];
+		$geo_data = array (
+				'lat' => $geocode ['geometry'] ['location'] ['lat'],
+				'lng' => $geocode ['geometry'] ['location'] ['lng']
+		);
+		// var_dump($geo_data);
+		return $geo_data;
+	}
+	
+	public function update_user_geodata($user_id, $location) {
+		
+		if ($location == null) {
 			// delete any geo data for this user
-			$delete = 'DELETE FROM ' . $table_prefix . 'mapusers_geolocation ' .
+			$delete = 'DELETE FROM ' . $this->table_prefix . 'mapusers_geolocation ' .
 					'WHERE user_id=' . $user_id;
 			$this->db->sql_query ( $delete );
 		} else {
 			// insert/update geo data for this user
-			$api_key = $config ['mapusers_gapi_key'];
-			$addressRaw = $cp_data ['pf_phpbb_location'];
-			$address = urlencode ( $addressRaw );
-			// $key = urlencode("************");
-			$ch = curl_init ();
-			$options = array (
-					CURLOPT_URL => "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $api_key,
-					CURLOPT_RETURNTRANSFER => 1,
-					CURLOPT_TIMEOUT => 100,
-					CURLOPT_SSL_VERIFYHOST => 0,
-					CURLOPT_SSL_VERIFYPEER => false
-			);
-			curl_setopt_array ( $ch, $options );
-			$response = curl_exec ( $ch );
-			if (curl_error ( $ch )) {
-				echo 'error:' . curl_error ( $ch );
-			}
-			curl_close ( $ch );
-			// print_r($response);
-			$data = json_decode ( $response, true ); // insert in the database
-			// from geometry.location.lat/lng
-			$geocode = $data ['results'] [0];
+			$geo_data = $this->geocode_user($location);
 			// record may be in database, so try UPDATE first. If that fails, do INSERT
-			$update = 'UPDATE ' . $table_prefix . 'mapusers_geolocation ' .
-					' SET latitude=' . $geocode ['geometry'] ['location'] ['lat'] .
-					', longitude=' . $geocode ['geometry'] ['location'] ['lng'] .
-					', location="' . $db->sql_escape ( $addressRaw ) . '"' .
+			$update = 'UPDATE ' . $this->table_prefix . 'mapusers_geolocation ' .
+					' SET latitude=' . $geo_data['lat'] .
+					', longitude=' . $geo_data['lng'] .
+					', location="' . $this->db->sql_escape ( $location ) . '"' .
 					', is_valid=1 WHERE user_id=' . $user_id;
 			$this->db->sql_query ( $update );
 			if (!$this->db->sql_affectedrows())
 			{
-				$insert = 'INSERT INTO ' . $table_prefix . 'mapusers_geolocation ' .
+				$insert = 'INSERT INTO ' . $this->table_prefix . 'mapusers_geolocation ' .
 						'(user_id, latitude, longitude, is_valid, location) VALUES(' . $user_id . ', ' .
-						$geocode ['geometry'] ['location'] ['lat'] . ', ' .
-						$geocode ['geometry'] ['location'] ['lng'] . ',' . '1, "' .
-						$db->sql_escape ( $addressRaw ) . '")';
+						$geo_data['lat'] . ', ' .
+						$geo_data['lng'] . ',' . '1, "' .
+						$this->db->sql_escape ( $location ) . '")';
 						$this->db->sql_query ( $insert );
 			}
 		}

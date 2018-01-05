@@ -20,8 +20,8 @@
                 <label for="Geocode Limit">{L_GEOCODE_LIMIT}{L_COLON}</label>
             </dt>
             <dd>
-                <input name="geocode_limit" id="geo_limit" type="text" class="inputbox"
-                    value="{GEOCODE_LIMIT}" />
+                <input name="geocode_limit" id="geo_limit" type="number" class="inputbox"
+                    min="0" max="100" default="25" step="5" value="{GEOCODE_LIMIT}" />
             </dd>
         </dl>
 	</fieldset>

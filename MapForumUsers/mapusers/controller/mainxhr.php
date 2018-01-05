@@ -31,6 +31,9 @@ class mainxhr {
 	/* @var \phpbb\driver_interface */
 	protected $db;
 	
+	/* @var \myersware\mapusers\geocoder\geocoder */
+	protected $geocoder;
+	
 	/**
 	 * Constructor
 	 *
@@ -39,13 +42,17 @@ class mainxhr {
 	 * @param \phpbb\request\request_interface $request
 	 * @param \phpbb\user $user
 	 * @param \phpbb\db\driver\factory $db
+	 * @param \myersware\mapusers\geocoder\geocoder $geocoder
 	 */
-	public function __construct(\phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\db\driver\factory $db) {
+	public function __construct(\phpbb\config\config $config, \phpbb\controller\helper $helper, 
+			\phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\db\driver\factory $db,
+			\myersware\mapusers\geocoder\geocoder $geocoder) {
 		$this->config = $config;
 		$this->helper = $helper;
 		$this->request = $request;
 		$this->user = $user;
 		$this->db = $db;
+		$this->geocoder = $geocoder;
 	}
 	
 	/**
@@ -83,8 +90,8 @@ class mainxhr {
 				if ($row) {
 					// var_dump($row);
 					$geo_data = array (
-							$row ['latitude'],
-							$row ['longitude'] 
+						'lat' => $row ['latitude'],
+						'lnt' => $row ['longitude'] 
 					);
 					// var_dump($geo_data);
 					$this->user->get_profile_fields ( $row ['user_id'] );
@@ -104,33 +111,7 @@ class mainxhr {
 				return $this->selectUsers ( $address, $geo_data, $q_radius, $q_limit );
 			}
 			// geocode input address for search
-			// $key = urlencode("************");
-			$address = urlencode ( $address );
-			$geocode_url = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&key=" . $api_key;
-			$ch = curl_init ();
-			$options = array (
-					CURLOPT_URL => $geocode_url,
-					CURLOPT_RETURNTRANSFER => 1,
-					CURLOPT_TIMEOUT => 100,
-					CURLOPT_SSL_VERIFYHOST => 0,
-					CURLOPT_SSL_VERIFYPEER => false 
-			);
-			curl_setopt_array ( $ch, $options );
-			$response = curl_exec ( $ch );
-			$httpcode = curl_getinfo ( $ch, CURLINFO_HTTP_CODE );
-			if ($ce = curl_errno ( $ch ) || $httpcode != 200) {
-				throw new \phpbb\exception\http_exception ( 500, "Location " . $address . " curl failed=" . curl_strerror ( $ce ) . " " . $httpcode . " url=" . $geocode_url );
-			}
-			curl_close ( $ch );
-			// var_dump('geocode curl=' . $response);
-			$data = json_decode ( $response, true );
-			// from geometry.location.lat/lng
-			$geocode = $data ['results'] [0];
-			$geo_data = array (
-					$geocode ['geometry'] ['location'] ['lat'],
-					$geocode ['geometry'] ['location'] ['lng'] 
-			);
-			// var_dump($geo_data);
+			$geo_data = $this->geocoder->geocode_user($address);
 			return $this->selectUsers ( $address, $geo_data, $q_radius, $q_limit );
 		} else {
 			throw new \phpbb\exception\http_exception ( 404, 'NOT_FOUND' );
@@ -140,11 +121,10 @@ class mainxhr {
 		global $table_prefix;
 		global $phpbb_container;
 		$geo_table = $phpbb_container->getParameter ( 'myersware.mapusers.tables.mapusers' );
-		// $q_qs = $this->request->variable_names();
 		$locations = array ();
 		if ($p_geo_data != null) {
-			$q_lat = $p_geo_data [0];
-			$q_lng = $p_geo_data [1];
+			$q_lat = $p_geo_data ['lat'];
+			$q_lng = $p_geo_data ['lng'];
 			if (! $q_lat) {
 				throw new \phpbb\exception\http_exception ( 500, "Location " . $address . " NOT_FOUND: invalid geo_data=" . var_dump ( $p_geo_data ) );
 			}

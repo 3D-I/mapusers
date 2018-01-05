@@ -125,9 +125,13 @@ class main_listener implements EventSubscriberInterface {
 		$data = $event ['data']; // full user data
 		$sql_ary = $event ['sql_ary']; // ignore
 		$user_id = $event ['user_id'];
-		$user_row = $event ['user_row']; // regular user profile data
-		// $this->update_geo_data ( $user_id, $user_row, $cp_data );
-		$this->geocoder->update_geo_data( $user_id, $user_row, $cp_data );
+		$cp_data ['pf_phpbb_location'] = $event ['user_row']; // regular user profile data
+		// determine if location field is modified. If not, return with no action
+		$this->user->get_profile_fields ( $user_id );
+		if ($this->user->profile_fields['pf_phpbb_location'] == $cp_data ['pf_phpbb_location']) {
+			return;
+		}
+		$this->geocoder->update_user_geodata( $user_id, $user_row, $cp_data );
 	}
 	
 	/**
@@ -143,7 +147,11 @@ class main_listener implements EventSubscriberInterface {
 		$cp_data = $event ['cp_data']; // custom profile data
 		$data = $event ['data']; // user profile data
 		$sql_ary = $event ['sql_ary']; // ignore
-		// $this->update_geo_data ( $user->data ['user_id'], $data, $cp_data );
-		$this->geocoder->update_geo_data( $user_id, $user_row, $cp_data );
+		// determine if location field is modified. If not, return with no action
+		$this->user->get_profile_fields ( $user->user_id );
+		if ($this->user->profile_fields['pf_phpbb_location'] == $cp_data ['pf_phpbb_location']) {
+			return;
+		}
+		$this->geocoder->update_user_geodata( $user->user_id, $cp_data ['pf_phpbb_location'] );
 	}
 }

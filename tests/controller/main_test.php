@@ -4,7 +4,7 @@
  *
  * Map Forum Users. An extension for the phpBB Forum Software package.
  *
- * @copyright (c) 2017, James Myers, myersware.com
+ * @copyright (c) 2018, James Myers, myersware.com
  * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
@@ -38,7 +38,11 @@ class main_test extends \phpbb_test_case {
 		$controller_helper = $this->getMockBuilder ( '\phpbb\controller\helper' )->disableOriginalConstructor ()->getMock ();
 		
 		/** @var \phpbb\auth $auth Mock the auth class */
-		$auth = $this->getMockBuilder('\App\Service\AuthService')->disableOriginalConstructor ()->getMock ();
+		$auth = $this->getMock('auth');
+		$acl_get_map = array(
+				array('u_mapusers_view', 23, true),
+				array('u_mapusers_view', '23', true),// Called without int cast
+		);
 		
 		// Set the expected output of the controller_helper->render() method
 		$controller_helper->expects ( $this->any () )->method ( 'render' )->willReturnCallback ( function ($template_file, $page_title = '', $status_code = 200, $display_online_list = false) {
@@ -46,7 +50,7 @@ class main_test extends \phpbb_test_case {
 		} );
 		
 		// Instantiate the map users controller
-		$controller = new \myersware\mapusers\controller\main ( new \phpbb\config\config ( array () ), $controller_helper, $template, $user );
+		$controller = new \myersware\mapusers\controller\main ( new \phpbb\config\config ( array () ), $controller_helper, $template, $user, $auth );
 		
 		$response = $controller->handle ( 'test' );
 		$this->assertInstanceOf ( '\Symfony\Component\HttpFoundation\Response', $response );

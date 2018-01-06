@@ -26,6 +26,9 @@ class main {
 	/* @var \phpbb\user */
 	protected $user;
 	
+	/* @var \phpbb\auth */
+	protected $auth;
+	
 	/**
 	 * Constructor
 	 *
@@ -35,11 +38,13 @@ class main {
 	 * @param \phpbb\template\template $template
 	 * @param \phpbb\user $user
 	 */
-	public function __construct(\phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user) {
+	public function __construct(\phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user,
+			\phpbb\auth $auth) {
 		$this->config = $config;
 		$this->helper = $helper;
 		$this->template = $template;
 		$this->user = $user;
+		$this->auth = $auth;
 	}
 	
 	/**
@@ -50,8 +55,7 @@ class main {
 	 * @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
 	 */
 	public function handle($name) {
-		global $auth;
-		if (! $auth->acl_get ( 'u_mapusers_view' )) {
+		if (! $this->auth->acl_get ( 'u_mapusers_view' )) {
 			trigger_error ( 'NOT_AUTHORISED' );
 		}
 		if ($name == 'showmap') {

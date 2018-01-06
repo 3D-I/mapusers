@@ -37,6 +37,9 @@ class main_test extends \phpbb_test_case {
 		/** @var \phpbb\controller\helper $controller_helper Mock the controller helper class */
 		$controller_helper = $this->getMockBuilder ( '\phpbb\controller\helper' )->disableOriginalConstructor ()->getMock ();
 		
+		/** @var \phpbb\auth $auth Mock the auth class */
+		$auth = $this->getMockBuilder('\App\Service\AuthService')->disableOriginalConstructor ()->getMock ();
+		
 		// Set the expected output of the controller_helper->render() method
 		$controller_helper->expects ( $this->any () )->method ( 'render' )->willReturnCallback ( function ($template_file, $page_title = '', $status_code = 200, $display_online_list = false) {
 			return new \Symfony\Component\HttpFoundation\Response ( $template_file, $status_code );

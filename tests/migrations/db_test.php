@@ -38,13 +38,13 @@ class add_database_changes_test extends \phpbb_database_test_case
         $this->db_tools = new \phpbb\db\tools($db);
     }
 
-    public function test_user_acme_column()
+    public function test_mapusers_geolocation_column()
     {
-        $this->assertTrue($this->db_tools->sql_column_exists(USERS_TABLE, 'user_acme'), 'Asserting that column "user_acme" exists');
+        $this->assertTrue($this->db_tools->sql_column_exists($this->table_prefix . 'mapusers_geolocation', 'latitude'), 'Asserting that column "latitude" exists');
     }
 
-    public function test_acme_demo_table()
+    public function test_mapusers_geolocation_demo_table()
     {
-        $this->assertTrue($this->db_tools->sql_table_exists($this->table_prefix . 'acme_demo'), 'Asserting that column "' . $this->table_prefix . 'acme_demo" does not exist');
+        $this->assertTrue($this->db_tools->sql_table_exists($this->table_prefix . 'mapusers_geolocation_demo'), 'Asserting that column "' . $this->table_prefix . 'latitude_demo" does not exist');
     }
 }

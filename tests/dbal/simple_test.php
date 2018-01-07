@@ -4,7 +4,7 @@
  *
  * Map Forum Users. An extension for the phpBB Forum Software package.
  *
- * @copyright (c) 2017, James Myers, myersware.com
+ * @copyright (c) 2018, James Myers, myersware.com
  * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
@@ -36,7 +36,7 @@ class simple_test extends \phpbb_database_test_case {
 			$db_tools = $factory->get ( $this->db );
 		}
 		
-		$this->assertTrue ( $db_tools->sql_column_exists ( USERS_TABLE, 'user_acme' ), 'Asserting that column "user_acme" exists' );
-		$this->assertFalse ( $db_tools->sql_column_exists ( USERS_TABLE, 'user_acme_demo' ), 'Asserting that column "user_acme_demo" does not exist' );
+		$this->assertTrue ( $db_tools->sql_column_exists ( $this->table_prefix . 'mapusers_geolocation', 'latitude' ), 'Asserting that column "latitude" exists' );
+		$this->assertFalse ( $db_tools->sql_column_exists ( $this->table_prefix . 'mapusers_geolocation', 'latitude_demo' ), 'Asserting that column "latitude_demo" does not exist' );
 	}
 }

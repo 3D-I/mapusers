@@ -31,7 +31,8 @@ class install_user_schema extends \phpbb\db\migration\container_aware_migration 
 				'postgres' => 'float(10, 6)' 
 		);
 		
-		$tools = $this->container->get ( 'dbal.tools' );
+		//$tools = $this->container->get ( 'dbal.tools' );
+		$tools = $this->db_tools;
 		
 		foreach ( $float_type as $sql_layer => $type ) {
 			$tools->dbms_type_map [$sql_layer] ['FLOAT'] = $type;

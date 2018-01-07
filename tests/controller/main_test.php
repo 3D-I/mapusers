@@ -38,11 +38,16 @@ class main_test extends \phpbb_test_case {
 		$controller_helper = $this->getMockBuilder ( '\phpbb\controller\helper' )->disableOriginalConstructor ()->getMock ();
 		
 		/** @var \phpbb\auth $auth Mock the auth class */
-		$auth = $this->getMock('auth');
+		$auth = $this->getMock();
 		$acl_get_map = array(
 				array('u_mapusers_view', 23, true),
 				array('u_mapusers_view', '23', true),// Called without int cast
 		);
+		$auth->expects($this->any())
+		->method('acl_get')
+		->with($this->stringContains('_'),
+				$this->anything())
+				->will($this->returnValueMap($acl_get_map));
 		
 		// Set the expected output of the controller_helper->render() method
 		$controller_helper->expects ( $this->any () )->method ( 'render' )->willReturnCallback ( function ($template_file, $page_title = '', $status_code = 200, $display_online_list = false) {

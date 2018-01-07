@@ -33,7 +33,7 @@ class main {
 	 * Constructor
 	 *
 	 * @param \phpbb\config\config $config
-	 * @param auth $auth
+	 * @param \phpbb\auth $auth
 	 * @param \phpbb\controller\helper $helper
 	 * @param \phpbb\template\template $template
 	 * @param \phpbb\user $user

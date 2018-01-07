@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<table name="lugate_mapusers_geolocation">
+		<column>user_id</column>
+		<column>latitude</column>
+		<column>longitude</column>
+		<column>location</column>
+		<column>is_valid</column>
+		<row>
+			<value>48</value>
+			<value>21.0</value>
+			<value>-22.0</value>
+			<value>Paradise, CA</value>
+			<value>0</value>
+		</row>
+	</table>
+</dataset>

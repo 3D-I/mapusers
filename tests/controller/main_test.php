@@ -13,19 +13,117 @@ namespace myersware\mapusers\tests\controller;
 require_once __DIR__ . '/../../../../../phpbb/auth/auth.php';
 
 class main_test extends \phpbb_test_case {
-	public function handle_data() {
+	
+	/** @var \PHPUnit_Framework_MockObject_MockObject|\phpbb\auth\auth */
+	protected $auth;
+	/** @var \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\DependencyInjection\ContainerInterface */
+	protected $container;
+	/** @var \PHPUnit_Framework_MockObject_MockObject|\phpbb\controller\helper */
+	protected $controller_helper;
+	/** @var \phpbb\language\language */
+	protected $lang;
+	/** @var \PHPUnit_Framework_MockObject_MockObject|\phpbb\template\template */
+	protected $template;
+	/** @var \phpbb\user */
+	protected $user;
+	
+	static protected function setup_extensions() {
+		return array (
+				'myersware/mapusers'
+		);
+	}
+	
+	public function setUp()
+	{
+		parent::setUp();
+		
+		global $cache, $config, $phpbb_extension_manager, $phpbb_dispatcher, $user, $phpbb_root_path, $phpEx;
+		
+		// Load/Mock classes required by the controller class
+		$db = $this->new_dbal();
+		$config = new \phpbb\config\config(array());
+		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
+		$this->auth = $this->getMock('\phpbb\auth\auth');
+		$text_formatter_utils = new \phpbb\textformatter\s9e\utils();
+		$this->container = $this->getMock('\Symfony\Component\DependencyInjection\ContainerInterface');
+		$this->container->expects($this->any())
+		->method('get')
+		->with('phpbb.pages.entity')
+		->will($this->returnCallback(function() use ($db, $config, $phpbb_dispatcher, $text_formatter_utils) {
+			return new \phpbb\pages\entity\page($db, $config, $phpbb_dispatcher, 'phpbb_pages', $text_formatter_utils);
+		}))
+		;
+			$this->template = $this->getMockBuilder('\phpbb\template\template')
+			->getMock()
+			;
+			$lang_loader = new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx);
+			$this->lang = new \phpbb\language\language($lang_loader);
+			$this->user = new \phpbb\user($this->lang, '\phpbb\datetime');
+			$this->controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
+			->disableOriginalConstructor()
+			->getMock();
+			$this->controller_helper->expects($this->any())
+			->method('render')
+			->willReturnCallback(function ($template_file, $page_title = '', $status_code = 200, $display_online_list = false) {
+				return new \Symfony\Component\HttpFoundation\Response($template_file, $status_code);
+			})
+			;
+				// Global vars called upon during execution
+				$cache = new \phpbb_mock_cache();
+				$user = $this->getMock('\phpbb\user', array(), array(
+						new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
+						'\phpbb\datetime'
+				));
+				$phpbb_extension_manager = new \phpbb_mock_extension_manager($phpbb_root_path);
+	}
+	
+	public function get_controller()
+	{
+		return  new \myersware\mapusers\controller\main(
+				$this->config,
+				$this->helper,
+				$this->template,
+				$this->user,
+				$this->auth
+				);
+	}
+	
+	public function display_data() {
 		return array (
 				array (
 						200,
-						'mapusers_body.html' 
-				) 
+						'mapusers_body.html'
+				)
 		);
 	}
 	
 	/**
+	 * Test controller display
+	 *
+	 * @dataProvider display_data
+	 */
+	public function test_display($route, $status_code, $page_content, $user_id)
+	{
+		$this->user->data['user_id'] = $user_id;
+		$controller = $this->get_controller();
+		$response = $controller->display($route);
+		$this->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
+		$this->assertEquals($status_code, $response->getStatusCode());
+		$this->assertEquals($page_content, $response->getContent());
+	}
+	
+	public function handle_data() {
+		return array (
+				array (
+						200,
+						'mapusers_body.html'
+				)
+		);
+	}
+	/**
 	 * @dataProvider handle_data
 	 */
-	public function test_handle($status_code, $page_content) {
+	public function testxx_handle($status_code, $page_content) {
 		// Mocks are dummy implementations that provide the API of components we depend on //
 		/** @var \phpbb\template\template $template Mock the template class */
 		$template = $this->getMockBuilder ( '\phpbb\template\template' )->disableOriginalConstructor ()->getMock ();
@@ -40,6 +138,8 @@ class main_test extends \phpbb_test_case {
 		$controller_helper = $this->getMockBuilder ( '\phpbb\controller\helper' )->disableOriginalConstructor ()->getMock ();
 		
 		/** @var \phpbb\auth $auth Mock the auth class */
+		$this->auth = $this->getMock('\phpbb\auth\auth');
+		
 		$auth = $this->getMock('auth');
 		$acl_get_map = array(
 				array('u_mapusers_view', 23, true),

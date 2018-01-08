@@ -16,6 +16,12 @@ namespace myersware\mapusers\tests\migrations;
 
 class add_database_changes_test extends \phpbb_database_test_case
 {
+	static protected function setup_extensions() {
+		return array (
+				'myersware/mapusers'
+		);
+	}
+	
     /** @var \phpbb\db\tools */
     protected $db_tools;
 

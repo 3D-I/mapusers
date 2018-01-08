@@ -44,15 +44,15 @@ class install_user_schema extends \phpbb\db\migration\container_aware_migration 
 								'COLUMNS' => array (
 										'user_id' => array (
 												'UINT',
-												0
+												'0'
 										),
 										'latitude' => array (
 												'FLOAT',
-												0.0
+												'0.0'
 										),
 										'longitude' => array (
 												'FLOAT',
-												0.0
+												'0.0'
 										),
 										'location' => array (
 												'VCHAR:255',

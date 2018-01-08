@@ -44,8 +44,7 @@ class install_user_schema extends \phpbb\db\migration\container_aware_migration 
 								'COLUMNS' => array (
 										'user_id' => array (
 												'UINT',
-												null,
-												'auto_increment' 
+												0
 										),
 										'latitude' => array (
 												'FLOAT',
@@ -56,8 +55,8 @@ class install_user_schema extends \phpbb\db\migration\container_aware_migration 
 												0.0
 										),
 										'location' => array (
-												'VCHAR',
-												255 
+												'VCHAR:255',
+												null 
 										),
 										'is_valid' => array (
 												'BOOL',

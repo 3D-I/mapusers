@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataset>
-	<table name="lugate_mapusers_geolocation">
+	<table name="phpbb_mapusers_geolocation">
 		<column>user_id</column>
 		<column>latitude</column>
 		<column>longitude</column>

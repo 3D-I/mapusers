@@ -40,41 +40,31 @@ class main_test extends \phpbb_test_case {
 		global $cache, $config, $phpbb_extension_manager, $phpbb_dispatcher, $user, $phpbb_root_path, $phpEx;
 		
 		// Load/Mock classes required by the controller class
-		$db = $this->new_dbal();
 		$config = new \phpbb\config\config(array());
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
 		$this->auth = $this->getMock('\phpbb\auth\auth');
-		$text_formatter_utils = new \phpbb\textformatter\s9e\utils();
-		$this->container = $this->getMock('\Symfony\Component\DependencyInjection\ContainerInterface');
-		$this->container->expects($this->any())
-		->method('get')
-		->with('phpbb.pages.entity')
-		->will($this->returnCallback(function() use ($db, $config, $phpbb_dispatcher, $text_formatter_utils) {
-			return new \phpbb\pages\entity\page($db, $config, $phpbb_dispatcher, 'phpbb_pages', $text_formatter_utils);
-		}))
+		$this->helper = $this.getMock('\phpbb\controller\helper');
+		$this->template = $this->getMockBuilder('\phpbb\template\template')
+		->getMock();
+		$lang_loader = new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx);
+		$this->lang = new \phpbb\language\language($lang_loader);
+		$this->user = new \phpbb\user($this->lang, '\phpbb\datetime');
+		$this->controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
+		->disableOriginalConstructor()
+		->getMock();
+		$this->controller_helper->expects($this->any())
+		->method('render')
+		->willReturnCallback(function ($template_file, $page_title = '', $status_code = 200, $display_online_list = false) {
+			return new \Symfony\Component\HttpFoundation\Response($template_file, $status_code);
+		})
 		;
-			$this->template = $this->getMockBuilder('\phpbb\template\template')
-			->getMock()
-			;
-			$lang_loader = new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx);
-			$this->lang = new \phpbb\language\language($lang_loader);
-			$this->user = new \phpbb\user($this->lang, '\phpbb\datetime');
-			$this->controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
-			->disableOriginalConstructor()
-			->getMock();
-			$this->controller_helper->expects($this->any())
-			->method('render')
-			->willReturnCallback(function ($template_file, $page_title = '', $status_code = 200, $display_online_list = false) {
-				return new \Symfony\Component\HttpFoundation\Response($template_file, $status_code);
-			})
-			;
-				// Global vars called upon during execution
-				$cache = new \phpbb_mock_cache();
-				$user = $this->getMock('\phpbb\user', array(), array(
-						new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
-						'\phpbb\datetime'
-				));
-				$phpbb_extension_manager = new \phpbb_mock_extension_manager($phpbb_root_path);
+			// Global vars called upon during execution
+			$cache = new \phpbb_mock_cache();
+			$user = $this->getMock('\phpbb\user', array(), array(
+					new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
+					'\phpbb\datetime'
+			));
+			$phpbb_extension_manager = new \phpbb_mock_extension_manager($phpbb_root_path);
 	}
 	
 	public function get_controller()

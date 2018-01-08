@@ -10,6 +10,8 @@
  */
 namespace myersware\mapusers\tests\controller;
 
+require_once dirname(__FILE__) . '/../phpBB/includes/auth.php';
+
 class main_test extends \phpbb_test_case {
 	public function handle_data() {
 		return array (
@@ -38,7 +40,7 @@ class main_test extends \phpbb_test_case {
 		$controller_helper = $this->getMockBuilder ( '\phpbb\controller\helper' )->disableOriginalConstructor ()->getMock ();
 		
 		/** @var \phpbb\auth $auth Mock the auth class */
-		$auth = $this->getMock('\phpbb\auth');
+		$auth = $this->getMock('auth');
 		$acl_get_map = array(
 				array('u_mapusers_view', 23, true),
 				array('u_mapusers_view', '23', true),// Called without int cast

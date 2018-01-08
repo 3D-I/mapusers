@@ -10,7 +10,7 @@
  */
 namespace myersware\mapusers\tests\controller;
 
-require_once dirname(__FILE__) . '/../phpBB/includes/auth.php';
+require_once dirname(__FILE__) . '/../phpBB3/includes/auth.php';
 
 class main_test extends \phpbb_test_case {
 	public function handle_data() {

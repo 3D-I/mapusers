@@ -43,7 +43,7 @@ class main_test extends \phpbb_test_case {
 		$config = new \phpbb\config\config(array());
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
 		$this->auth = $this->getMock('\phpbb\auth\auth');
-		$this->helper = $this.getMock('\phpbb\controller\helper');
+		$this->helper = $this->getMock('\phpbb\controller\helper');
 		$this->template = $this->getMockBuilder('\phpbb\template\template')
 		->getMock();
 		$lang_loader = new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx);

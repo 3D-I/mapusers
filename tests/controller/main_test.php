@@ -10,8 +10,6 @@
  */
 namespace myersware\mapusers\tests\controller;
 
-require_once __DIR__ . '/../../../../../phpbb/auth/auth.php';
-
 class main_test extends \phpbb_test_case {
 	
 	/** @var \PHPUnit_Framework_MockObject_MockObject|\phpbb\auth\auth */

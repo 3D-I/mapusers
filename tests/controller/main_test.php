@@ -77,7 +77,7 @@ class main_test extends \phpbb_test_case {
 	
 	public function display_data() {
 		return array (
-				array('mapusers/showmap', 403, 'mapusers_body.html', 2)
+				array('mapusers/showmap', 403, 'NOT_AUTHORISED', 2)
 		);
 	}
 	

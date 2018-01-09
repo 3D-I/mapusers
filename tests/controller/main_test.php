@@ -40,7 +40,7 @@ class main_test extends \phpbb_test_case {
 		global $cache, $config, $phpbb_extension_manager, $phpbb_dispatcher, $user, $phpbb_root_path, $phpEx;
 		
 		// Load/Mock classes required by the controller class
-		$config = new \phpbb\config\config(array());
+		$this->config = new \phpbb\config\config(array());
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
 		$this->auth = $this->getMock('\phpbb\auth\auth');
 		// $this->helper = $this->getMock('\phpbb\controller\helper');

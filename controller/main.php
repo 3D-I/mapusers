@@ -26,20 +26,20 @@ class main {
 	/* @var \phpbb\user */
 	protected $user;
 	
-	/* @var \phpbb\auth */
+	/* @var \phpbb\auth\auth */
 	protected $auth;
 	
 	/**
 	 * Constructor
 	 *
 	 * @param \phpbb\config\config $config
-	 * @param \phpbb\auth $auth
+	 * @param \phpbb\auth\auth $auth
 	 * @param \phpbb\controller\helper $helper
 	 * @param \phpbb\template\template $template
 	 * @param \phpbb\user $user
 	 */
 	public function __construct(\phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user,
-			\phpbb\auth $auth) {
+			\phpbb\auth\auth $auth) {
 		$this->config = $config;
 		$this->helper = $helper;
 		$this->template = $template;

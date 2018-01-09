@@ -40,8 +40,9 @@ class main_test extends \phpbb_test_case {
 		// Load/Mock classes required by the controller class
 		$this->config = new \phpbb\config\config(array());
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
-		
-		$this->auth = $this->getMockBuilder('\phpbb\auth')
+		$this->auth = $this->getMock('\phpbb\auth\auth');
+		/*
+		$this->auth = $this->getMockBuilder('\phpbb\auth\auth')
 		->disableOriginalConstructor()
 		->getMock();
 		$acl_get_map = array(
@@ -53,7 +54,7 @@ class main_test extends \phpbb_test_case {
 		->with($this->stringContains('_'),
 				$this->anything())
 				->will($this->returnValueMap($acl_get_map));
-		
+		*/
 		$this->template = $this->getMockBuilder('\phpbb\template\template')
 		->getMock();
 		$lang_loader = new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx);

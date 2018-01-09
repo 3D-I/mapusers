@@ -75,7 +75,7 @@ class main_test extends \phpbb_test_case {
 				);
 	}
 	
-	public function display_data() {
+	public function handle_data() {
 		return array (
 				array('mapusers/showmap', 200, 'mapusers_body.html', 2)
 		);
@@ -86,7 +86,7 @@ class main_test extends \phpbb_test_case {
 	 *
 	 * @dataProvider display_data
 	 */
-	public function test_display($route, $status_code, $page_content, $user_id)
+	public function test_handle($route, $status_code, $page_content, $user_id)
 	{
 		$this->user->data['user_id'] = $user_id;
 		$controller = $this->get_controller();
@@ -96,7 +96,7 @@ class main_test extends \phpbb_test_case {
 		$this->assertEquals($page_content, $response->getContent());
 	}
 	
-	public function handle_data() {
+	public function xxhandle_data() {
 		return array (
 				array (
 						200,

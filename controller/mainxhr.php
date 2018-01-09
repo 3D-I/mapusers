@@ -71,6 +71,7 @@ class mainxhr {
 		global $auth;
 		
 		if (! $auth->acl_get ( 'u_mapusers_view' )) {
+			send_status_line(403, 'Forbidden');
 			trigger_error ( 'NOT_AUTHORISED' );
 		}
 		$this->table_prefix = $table_prefix;

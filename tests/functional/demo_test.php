@@ -16,11 +16,11 @@ namespace myersware\myersware\tests\functional;
 class demo_test extends \phpbb_functional_test_case {
 	static protected function setup_extensions() {
 		return array (
-				'myersware/myersware' 
+				'myersware/mapusers' 
 		);
 	}
 	public function test_myersware_mapusers() {
-		$crawler = self::request ( 'GET', 'app.php/myersware/mapusers' );
+		$crawler = self::request ( 'GET', 'app.php/mapusers/showmap' );
 		$this->assertContains ( 'myersware', $crawler->filter ( 'h2' )->text () );
 		
 		$this->add_lang_ext ( 'myersware/mapusers', 'common' );
@@ -30,7 +30,7 @@ class demo_test extends \phpbb_functional_test_case {
 		$this->assertNotContainsLang ( 'ACP_MAPUSERS', $crawler->filter ( 'h2' )->text () );
 	}
 	public function test_map_users() {
-		$crawler = self::request ( 'GET', 'app.php/myersware/mapusers' );
+		$crawler = self::request ( 'GET', 'app.php/mapusers/showmap' );
 		$this->assertNotContains ( 'myersware', $crawler->filter ( 'h2' )->text () );
 		$this->assertContains ( 'map', $crawler->filter ( 'h2' )->text () );
 	}

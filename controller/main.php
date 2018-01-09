@@ -56,6 +56,7 @@ class main {
 	 */
 	public function handle($name) {
 		if (! $this->auth->acl_get ( 'u_mapusers_view' )) {
+			send_status_line(403, 'Forbidden');
 			trigger_error ( 'NOT_AUTHORISED' );
 		}
 		if ($name == 'showmap') {

@@ -90,9 +90,17 @@ class main_test extends \phpbb_test_case {
 	{
 		$this->user->data['user_id'] = $user_id;
 		$controller = $this->get_controller();
-		$response = $controller->handle($route);
-		$this->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
-		$this->assertEquals($status_code, $response->getStatusCode());
-		$this->assertEquals($page_content, $response->getContent());
+		try
+		{
+			$response = $controller->handle($route);
+			$this->fail('The expected \phpbb\exception\http_exception was not thrown');
+		}
+		catch (\phpbb\exception\http_exception $exception)
+		{
+			$this->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
+			$this->assertEquals($status_code, $exception->getStatusCode());
+			$this->assertEquals($page_content, $exception->getMessage());
+		}
+		
 	}
 }

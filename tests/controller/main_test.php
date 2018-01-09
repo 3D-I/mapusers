@@ -58,13 +58,13 @@ class main_test extends \phpbb_test_case {
 			return new \Symfony\Component\HttpFoundation\Response($template_file, $status_code);
 		})
 		;
-			// Global vars called upon during execution
-			$cache = new \phpbb_mock_cache();
-			$user = $this->getMock('\phpbb\user', array(), array(
-					new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
-					'\phpbb\datetime'
-			));
-			$phpbb_extension_manager = new \phpbb_mock_extension_manager($phpbb_root_path);
+		// Global vars called upon during execution
+		$cache = new \phpbb_mock_cache();
+		$user = $this->getMock('\phpbb\user', array(), array(
+				new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
+				'\phpbb\datetime'
+		));
+		$phpbb_extension_manager = new \phpbb_mock_extension_manager($phpbb_root_path);
 	}
 	
 	public function get_controller()
@@ -80,7 +80,7 @@ class main_test extends \phpbb_test_case {
 	
 	public function display_data() {
 		return array (
-				array('showmap', 200, 'mapusers_body.html', 2)
+				array('mapusers/showmap', 200, 'mapusers_body.html', 2)
 		);
 	}
 	

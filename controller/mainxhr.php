@@ -71,8 +71,7 @@ class mainxhr {
 		global $auth;
 		
 		if (! $auth->acl_get ( 'u_mapusers_view' )) {
-			send_status_line(403, 'Forbidden');
-			trigger_error ( 'NOT_AUTHORISED' );
+			throw new \phpbb\exception\http_exception ( 403, "NOT_AUTHORISED" );
 		}
 		$this->table_prefix = $table_prefix;
 		$api_key = $this->config ['mapusers_gapi_key'];

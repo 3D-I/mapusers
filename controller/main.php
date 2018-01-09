@@ -56,8 +56,7 @@ class main {
 	 */
 	public function handle($name) {
 		if (! $this->auth->acl_get ( 'u_mapusers_view' )) {
-			send_status_line(403, 'Forbidden');
-			trigger_error ( 'NOT_AUTHORISED' );
+			throw new \phpbb\exception\http_exception ( 403, "NOT_AUTHORISED" );
 		}
 		if ($name == 'showmap') {
 			$l_message = ! $this->config ['myersware_mapusers_goodbye'] ? 'MAPUSERS_HELLO' : 'MAPUSERS_GOODBYE';

@@ -113,8 +113,8 @@ class main_test extends \phpbb_test_case {
 	public function testxx_handle($status_code, $page_content) {
 		// Mocks are dummy implementations that provide the API of components we depend on //
 		/** @var \phpbb\template\template $template Mock the template class */
-		$template = $this->getMockBuilder ( '\phpbb\template\template' )->disableOriginalConstructor ()->getMock ();
-		
+		$template = $this->getMockBuilder('\phpbb\template\template')
+		->getMock();
 		/** @var \phpbb\user $user Mock the user class */
 		$user = $this->getMockBuilder ( '\phpbb\user' )->disableOriginalConstructor ()->getMock ();
 		
@@ -125,9 +125,7 @@ class main_test extends \phpbb_test_case {
 		$controller_helper = $this->getMockBuilder ( '\phpbb\controller\helper' )->disableOriginalConstructor ()->getMock ();
 		
 		/** @var \phpbb\auth $auth Mock the auth class */
-		$this->auth = $this->getMock('\phpbb\auth\auth');
-		
-		$auth = $this->getMock('auth');
+		$auth = $this->getMock('\phpbb\auth\auth');
 		$acl_get_map = array(
 				array('u_mapusers_view', 23, true),
 				array('u_mapusers_view', '23', true),// Called without int cast

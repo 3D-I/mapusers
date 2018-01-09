@@ -75,7 +75,7 @@ class main_test extends \phpbb_test_case {
 				);
 	}
 	
-	public function handle_data() {
+	public function display_data() {
 		return array (
 				array('mapusers/showmap', 200, 'mapusers_body.html', 2)
 		);

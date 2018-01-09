@@ -43,7 +43,7 @@ class main_test extends \phpbb_test_case {
 		$config = new \phpbb\config\config(array());
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
 		$this->auth = $this->getMock('\phpbb\auth\auth');
-		$this->helper = $this->getMock('\phpbb\controller\helper');
+		// $this->helper = $this->getMock('\phpbb\controller\helper');
 		$this->template = $this->getMockBuilder('\phpbb\template\template')
 		->getMock();
 		$lang_loader = new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx);
@@ -71,7 +71,7 @@ class main_test extends \phpbb_test_case {
 	{
 		return  new \myersware\mapusers\controller\main(
 				$this->config,
-				$this->helper,
+				$this->controller_helper,
 				$this->template,
 				$this->user,
 				$this->auth
@@ -110,7 +110,7 @@ class main_test extends \phpbb_test_case {
 	/**
 	 * @dataProvider handle_data
 	 */
-	public function testxx_handle($status_code, $page_content) {
+	public function xxtestxx_handle($status_code, $page_content) {
 		// Mocks are dummy implementations that provide the API of components we depend on //
 		/** @var \phpbb\template\template $template Mock the template class */
 		$template = $this->getMockBuilder('\phpbb\template\template')

@@ -42,6 +42,19 @@ class add_database_changes_test extends \phpbb_database_test_case
         $this->table_prefix = $table_prefix;
         $db = $this->new_dbal();
         $this->db_tools = new \phpbb\db\tools($db);
+        $float_type = array (
+        		'mysql_41' => 'float(10, 6)',
+        		'mysql_40' => 'float(10, 6)',
+        		'mssql' => '[float]',
+        		'mssqlnative' => '[float]',
+        		'oracle' => 'number(10, 6)',
+        		'sqlite' => 'decimal(10, 6)',
+        		'sqlite3' => 'decimal(10, 6)',
+        		'postgres' => 'float(10, 6)'
+        );
+        foreach ( $float_type as $sql_layer => $type ) {
+        	$this->db_tools->dbms_type_map [$sql_layer] ['FLOAT'] = $type;
+        }
     }
 
     public function test_mapusers_geolocation_column()

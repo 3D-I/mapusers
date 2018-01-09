@@ -40,8 +40,10 @@ class add_database_changes_test extends \phpbb_database_test_case
         global $table_prefix;
 
         $this->table_prefix = $table_prefix;
-        $db = $this->new_dbal();
-        $this->db_tools = new \phpbb\db\tools($db);
+        $this->db = $this->new_dbal();
+        // $this->db_tools = new \phpbb\db\tools($db);
+        $factory = new \phpbb\db\tools\factory ();
+        $this->db_tools = $factory->get ( $this->db );
     }
 
     public function test_mapusers_geolocation_column()

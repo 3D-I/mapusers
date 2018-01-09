@@ -97,7 +97,6 @@ class main_test extends \phpbb_test_case {
 		}
 		catch (\phpbb\exception\http_exception $exception)
 		{
-			$this->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
 			$this->assertEquals($status_code, $exception->getStatusCode());
 			$this->assertEquals($page_content, $exception->getMessage());
 		}

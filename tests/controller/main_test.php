@@ -90,7 +90,7 @@ class main_test extends \phpbb_test_case {
 	{
 		$this->user->data['user_id'] = $user_id;
 		$controller = $this->get_controller();
-		$response = $controller->display($route);
+		$response = $controller->handle($route);
 		$this->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
 		$this->assertEquals($status_code, $response->getStatusCode());
 		$this->assertEquals($page_content, $response->getContent());

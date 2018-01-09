@@ -80,10 +80,7 @@ class main_test extends \phpbb_test_case {
 	
 	public function display_data() {
 		return array (
-				array (
-						200,
-						'mapusers_body.html'
-				)
+				array('showmap', 200, 'mapusers_body.html', 2)
 		);
 	}
 	

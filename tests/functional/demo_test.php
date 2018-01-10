@@ -24,7 +24,7 @@ class demo_test extends \phpbb_functional_test_case {
 	{
 		$this->login();
 		// check for logout link
-		$crawler = self::request('GET', 'index.php');
+		$crawler = self::request('GET', 'index.php', array(), false);
 		$this->assertContains($this->lang('LOGOUT', 'admin'), $crawler->filter('.navbar')->text());
 	}
 	
@@ -32,7 +32,7 @@ class demo_test extends \phpbb_functional_test_case {
 	{
 		$this->create_user('anothertestuser');
 		$this->login('anothertestuser');
-		$crawler = self::request('GET', 'index.php');
+		$crawler = self::request('GET', 'index.php', array(), false);
 		$this->assertContains('anothertestuser', $crawler->filter('#username_logged_in')->text());
 	}
 	

@@ -29,6 +29,20 @@ class simple_test extends \phpbb_database_test_case {
 		$factory = new \phpbb\db\tools\factory ();
 		$db_tools = $factory->get ( $this->db );
 		
+		$float_type = array (
+				'mysql_41' => 'float(10, 6)',
+				'mysql_40' => 'float(10, 6)',
+				'mssql' => '[float]',
+				'mssqlnative' => '[float]',
+				'oracle' => 'number(10, 6)',
+				'sqlite' => 'decimal(10, 6)',
+				'sqlite3' => 'decimal(10, 6)',
+				'postgres' => 'float(10, 6)'
+		);
+		foreach ( $float_type as $sql_layer => $type ) {
+			$db_tools->dbms_type_map [$sql_layer] ['FLOAT'] = $type;
+		}
+		
 		$this->assertTrue ( $db_tools->sql_column_exists ( $this->table_prefix . 'mapusers_geolocation', 'latitude' ), 'Asserting that column "latitude" exists' );
 		$this->assertFalse ( $db_tools->sql_column_exists ( $this->table_prefix . 'mapusers_geolocation', 'latitude_demo' ), 'Asserting that column "latitude_demo" does not exist' );
 	}

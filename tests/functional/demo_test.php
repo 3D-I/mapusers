@@ -8,7 +8,7 @@
  * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
-namespace myersware\myersware\tests\functional;
+namespace myersware\mapusers\tests\functional;
 
 /**
  * @group functional
@@ -24,7 +24,7 @@ class demo_test extends \phpbb_functional_test_case {
 	{
 		$this->login();
 		// check for logout link
-		$crawler = $this->request('GET', 'index.php', array(), 0);
+		$crawler = $this->request('GET', 'index.php', array(), false);
 		$this->assertContains($this->lang('LOGOUT', 'admin'), $crawler->filter('.navbar')->text());
 	}
 	

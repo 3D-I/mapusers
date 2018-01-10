@@ -48,11 +48,11 @@ class install_user_schema extends \phpbb\db\migration\container_aware_migration 
 										),
 										'latitude' => array (
 												'FLOAT',
-												0.0
+												null
 										),
 										'longitude' => array (
 												'FLOAT',
-												0.0
+												null
 										),
 										'location' => array (
 												'VCHAR:255',

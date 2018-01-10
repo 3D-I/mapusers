@@ -18,6 +18,21 @@ namespace myersware\mapusers;
  */
 class ext extends \phpbb\extension\base {
 	/**
+	 * Check whether or not the extension can be enabled.
+	 * The current phpBB version should meet or exceed
+	 * the minimum version required by this extension:
+	 *
+	 * Requires phpBB 3.2.0 due to new dynamic route loader
+	 *
+	 * @return bool
+	 * @access public
+	 */
+	public function is_enableable()
+	{
+		return phpbb_version_compare(PHPBB_VERSION, '3.2.0', '>=');
+	}
+	
+	/**
 	 * Enable notifications for the extension
 	 *
 	 * @param mixed $old_state

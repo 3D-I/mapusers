@@ -24,7 +24,7 @@ class demo_test extends \phpbb_functional_test_case {
 	{
 		$this->login();
 		// check for logout link
-		$crawler = self::request('GET', 'index.php', array(), false);
+		$crawler = $this->request('GET', 'index.php', array(), false);
 		$this->assertContains($this->lang('LOGOUT', 'admin'), $crawler->filter('.navbar')->text());
 	}
 	
@@ -32,7 +32,7 @@ class demo_test extends \phpbb_functional_test_case {
 	{
 		$this->create_user('anothertestuser');
 		$this->login('anothertestuser');
-		$crawler = self::request('GET', 'index.php', array(), false);
+		$crawler = $this->request('GET', 'index.php', array(), false);
 		$this->assertContains('anothertestuser', $crawler->filter('#username_logged_in')->text());
 	}
 	
@@ -41,7 +41,7 @@ class demo_test extends \phpbb_functional_test_case {
 		$this->login('anothertestuser');
 		try
 		{
-			$crawler = self::request ( 'GET', 'app.php/mapusers/showmap', array(), false );
+			$crawler = $this->request ( 'GET', 'app.php/mapusers/showmap', array(), false );
 			$this->fail('The expected \phpbb\exception\http_exception was not thrown');
 		}
 		catch (\phpbb\exception\http_exception $exception)

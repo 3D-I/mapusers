@@ -41,7 +41,7 @@ class demo_test extends \phpbb_functional_test_case {
 		$this->login('anothertestuser');
 		try
 		{
-			$crawler = self::request ( 'GET', 'app.php/mapusers/showmap' );
+			$crawler = self::request ( 'GET', 'app.php/mapusers/showmap', array(), false );
 			$this->fail('The expected \phpbb\exception\http_exception was not thrown');
 		}
 		catch (\phpbb\exception\http_exception $exception)

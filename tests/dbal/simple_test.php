@@ -10,8 +10,6 @@
  */
 namespace myersware\mapusers\tests\dbal;
 
-// Need to include functions.php to use phpbb_version_compare in this test
-require_once __DIR__ . '/../../../../../includes/functions.php';
 class simple_test extends \phpbb_database_test_case {
 	static protected function setup_extensions() {
 		return array (
@@ -24,17 +22,12 @@ class simple_test extends \phpbb_database_test_case {
 	public function getDataSet() {
 		return $this->createXMLDataSet ( __DIR__ . '/fixtures/config.xml' );
 	}
+	
 	public function test_column() {
 		$this->db = $this->new_dbal ();
-		
-		if (phpbb_version_compare ( PHPBB_VERSION, '3.2.0-dev', '<' )) {
-			// This is how to instantiate db_tools in phpBB 3.1
-			$db_tools = new \phpbb\db\tools ( $this->db );
-		} else {
-			// This is how to instantiate db_tools in phpBB 3.2
-			$factory = new \phpbb\db\tools\factory ();
-			$db_tools = $factory->get ( $this->db );
-		}
+		// This is how to instantiate db_tools in phpBB 3.2
+		$factory = new \phpbb\db\tools\factory ();
+		$db_tools = $factory->get ( $this->db );
 		
 		$this->assertTrue ( $db_tools->sql_column_exists ( $this->table_prefix . 'mapusers_geolocation', 'latitude' ), 'Asserting that column "latitude" exists' );
 		$this->assertFalse ( $db_tools->sql_column_exists ( $this->table_prefix . 'mapusers_geolocation', 'latitude_demo' ), 'Asserting that column "latitude_demo" does not exist' );

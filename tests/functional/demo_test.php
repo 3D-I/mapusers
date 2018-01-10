@@ -24,7 +24,7 @@ class demo_test extends \phpbb_functional_test_case {
 	{
 		$this->login();
 		// check for logout link
-		$crawler = $this->request('GET', 'index.php', array(), false);
+		$crawler = $this->request('GET', 'index.php', array(), 0);
 		$this->assertContains($this->lang('LOGOUT', 'admin'), $crawler->filter('.navbar')->text());
 	}
 	

@@ -39,8 +39,12 @@ class simple_test extends \phpbb_database_test_case {
 			$db_tools->dbms_type_map [$sql_layer] ['FLOAT'] = $type;
 		}
 		// var_dump($db_tools->dbms_type_map);
+		var_dump($db_tools->dbms_type_map [$sql_layer]);
+		print $db_tools->dbms_type_map [$sql_layer];
 		$this->assertArrayHasKey ( 'FLOAT', [$db_tools->dbms_type_map[$db_tools->sql_layer] => 'no FLOAT type'] );
+		print "test table exists";
 		$this->assertTrue($this->db_tools->sql_table_exists($this->table_prefix . 'mapusers_geolocation'), 'Asserting that table "' . $this->table_prefix . 'geolocation" exists');
+		print "test column exists";
 		$this->assertTrue ( $db_tools->sql_column_exists ( $this->table_prefix . 'mapusers_geolocation', 'location' ), 'Asserting that column "location" exists' );
 		$this->assertFalse ( $db_tools->sql_column_exists ( $this->table_prefix . 'mapusers_geolocation', 'latitude_demo' ), 'Asserting that column "latitude_demo" does not exist' );
 	}

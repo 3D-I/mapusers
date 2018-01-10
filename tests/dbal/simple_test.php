@@ -32,12 +32,8 @@ class simple_test extends \phpbb_database_test_case {
 		$float_type = array (
 				'mysql_41' => 'float(10, 6)',
 				'mysql_40' => 'float(10, 6)',
-				'mssql' => '[float]',
-				'mssqlnative' => '[float]',
 				'oracle' => 'number(10, 6)',
-				'sqlite' => 'decimal(10, 6)',
-				'sqlite3' => 'decimal(10, 6)',
-				'postgres' => 'float(10, 6)'
+				'sqlite3' => 'decimal(10, 6)'
 		);
 		foreach ( $float_type as $sql_layer => $type ) {
 			$db_tools->dbms_type_map [$sql_layer] ['FLOAT'] = $type;

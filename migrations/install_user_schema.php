@@ -23,12 +23,8 @@ class install_user_schema extends \phpbb\db\migration\container_aware_migration 
 		$float_type = array (
 				'mysql_41' => 'float(10, 6)',
 				'mysql_40' => 'float(10, 6)',
-				'mssql' => '[float]',
-				'mssqlnative' => '[float]',
 				'oracle' => 'number(10, 6)',
-				'sqlite' => 'decimal(10, 6)',
-				'sqlite3' => 'decimal(10, 6)',
-				'postgres' => 'float(10, 6)' 
+				'sqlite3' => 'decimal(10, 6)'
 		);
 		
 		//$tools = $this->container->get ( 'dbal.tools' );

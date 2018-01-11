@@ -21,6 +21,7 @@ class install_user_schema extends \phpbb\db\migration\container_aware_migration 
 	}
 	public function update_schema() {
 		$float_type = array (
+				'mysqli' => 'decimal(11,8)',
 				'mysql_41' => 'decimal(11,8)',
 				'mysql_40' => 'decimal(11,8)',
 				'oracle' => 'number(11, 8)',

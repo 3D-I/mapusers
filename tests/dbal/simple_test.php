@@ -26,6 +26,7 @@ class simple_test extends \phpbb_database_test_case {
 		$factory = new \phpbb\db\tools\factory ();
 		$this->db_tools = $factory->get ( $this->db );
 		$float_type = array (
+				'mysqli' => 'decimal(11,8)',
 				'mysql_41' => 'decimal(11,8)',
 				'mysql_40' => 'decimal(11,8)',
 				'oracle' => 'number(11, 8)',

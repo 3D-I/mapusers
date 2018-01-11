@@ -40,7 +40,8 @@ class simple_test extends \phpbb_database_test_case {
 		}
 		// var_dump($db_tools->dbms_type_map);
 		var_dump($db_tools->dbms_type_map [$sql_layer]);
-		// flush();
+		print "test FLOAT available";
+		flush();
 		$this->assertArrayHasKey ( 'FLOAT', [$db_tools->dbms_type_map[$sql_layer] => 'no FLOAT type'] );
 		print "test table exists";
 		echo "test table exists";

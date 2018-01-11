@@ -19,8 +19,6 @@ class simple_test extends \phpbb_database_test_case {
 	
 	public function setUp()
 	{
-		parent::setUp();
-		
 		global $table_prefix;
 		
 		$this->table_prefix = $table_prefix;
@@ -39,6 +37,8 @@ class simple_test extends \phpbb_database_test_case {
 		var_dump($this->db_tools->dbms_type_map [$this->db->sql_layer]);
 		print "test FLOAT available";
 		flush();
+		
+		parent::setUp();
 	}
 	
 	/** @var \phpbb\db\driver\driver_interface */

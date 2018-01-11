@@ -35,7 +35,8 @@ class simple_test extends \phpbb_database_test_case {
 			$this->db_tools->dbms_type_map [$sql_layer] ['FLOAT'] = $type;
 		}
 		var_dump($this->db_tools->dbms_type_map [$this->db->sql_layer]);
-		print "test FLOAT available " . $this->db->sql_layer . " " . $this->sql_layer . " ";
+		var_dump($this->db_tools->dbms_type_map);
+		print "test FLOAT available " . $this->db->sql_layer . "-" . $this->sql_layer . " ";
 		flush();
 		
 		parent::setUp();

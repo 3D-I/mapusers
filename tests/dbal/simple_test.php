@@ -21,13 +21,17 @@ class simple_test extends \phpbb_database_test_case {
 	protected $db;
 	public function getDataSet() {
 		print "getDataSet";
+		echo "getDataSet";
 		flush();
+		$this->assertTrue(false, 'Asserting in getDataSet');
 		return $this->createXMLDataSet ( __DIR__ . '/fixtures/config.xml' );
 	}
 	
 	public function test_column() {
 		print "test_column";
+		echo "test_column";
 		flush();
+		$this->assertTrue(false, 'Asserting in test_column');
 		$this->db = $this->new_dbal ();
 		// This is how to instantiate db_tools in phpBB 3.2
 		$factory = new \phpbb\db\tools\factory ();

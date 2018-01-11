@@ -12,6 +12,7 @@ namespace myersware\mapusers\tests\dbal;
 
 class simple_test extends \phpbb_database_test_case {
 	static protected function setup_extensions() {
+		$this->assert(false, 'setup_extensions');
 		return array (
 				'myersware/mapusers' 
 		);

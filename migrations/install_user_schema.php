@@ -33,6 +33,10 @@ class install_user_schema extends \phpbb\db\migration\container_aware_migration 
 		foreach ( $float_type as $sql_layer => $type ) {
 			$tools->dbms_type_map [$sql_layer] ['FLOAT'] = $type;
 		}
+		// seems like $this->db->sql_layer='mysqli' ??
+		if ($this->db_sql_layer == 'mysqli') {
+			$this->db_sql_layer = 'mysql_41';
+		}
 		
 		return array (
 				'add_tables' => array (

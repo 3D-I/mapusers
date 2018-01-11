@@ -35,6 +35,9 @@ class simple_test extends \phpbb_database_test_case {
 			$this->db_tools->dbms_type_map [$sql_layer] ['FLOAT'] = $type;
 		}
 		// seems like $this->db->sql_layer='mysqli' ??
+		if ($this->db_sql_layer == 'mysqli') {
+			$this->db_sql_layer = 'mysql_41';
+		}
 		var_dump($this->db_tools->dbms_type_map ['mysql_41']);
 		  // var_dump($this->db_tools->dbms_type_map);
 		print "test FLOAT available " . $this->db->sql_layer;

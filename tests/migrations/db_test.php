@@ -53,6 +53,6 @@ class add_database_changes_test extends \phpbb_database_test_case
 
     public function test_mapusers_geolocation_demo_table()
     {
-        $this->assertTrue($this->db_tools->sql_table_exists($this->table_prefix . 'mapusers_geolocation_demo'), 'Asserting that table "' . $this->table_prefix . 'geolocation_demo" does not exist');
+        $this->assertFalse($this->db_tools->sql_table_exists($this->table_prefix . 'mapusers_geolocation_demo'), 'Asserting that table "' . $this->table_prefix . 'geolocation_demo" does not exist');
     }
 }

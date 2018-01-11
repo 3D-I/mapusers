@@ -39,7 +39,7 @@ class simple_test extends \phpbb_database_test_case {
 			$db_tools->dbms_type_map [$sql_layer] ['FLOAT'] = $type;
 		}
 		// var_dump($db_tools->dbms_type_map);
-		var_dump($db_tools->dbms_type_map [$sql_layer]);
+		dump($db_tools->dbms_type_map [$sql_layer]);
 		print $db_tools->dbms_type_map [$sql_layer];
 		echo $db_tools->dbms_type_map [$sql_layer];
 		flush();

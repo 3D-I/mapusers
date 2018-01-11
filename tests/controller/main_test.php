@@ -40,7 +40,7 @@ class main_test extends \phpbb_test_case {
 		// Load/Mock classes required by the controller class
 		$this->config = new \phpbb\config\config(array());
 		$phpbb_dispatcher = new \phpbb_mock_event_dispatcher();
-		$this->auth = $this->getMock('\phpbb\auth\auth');
+		$this->auth = $this->getMockBuilder('\phpbb\auth\auth')->getMock();
 		$this->template = $this->getMockBuilder('\phpbb\template\template')
 		->getMock();
 		$lang_loader = new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx);
@@ -57,10 +57,12 @@ class main_test extends \phpbb_test_case {
 		;
 		// Global vars called upon during execution
 		$cache = new \phpbb_mock_cache();
+		/*
 		$user = $this->getMock('\phpbb\user', array(), array(
 				new \phpbb\language\language(new \phpbb\language\language_file_loader($phpbb_root_path, $phpEx)),
 				'\phpbb\datetime'
-		));
+		)); */
+		$user = new \phpbb\user($lang, '\phpbb\datetime');
 		$phpbb_extension_manager = new \phpbb_mock_extension_manager($phpbb_root_path);
 	}
 	

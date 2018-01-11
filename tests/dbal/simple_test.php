@@ -20,10 +20,14 @@ class simple_test extends \phpbb_database_test_case {
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 	public function getDataSet() {
+		print "getDataSet";
+		flush();
 		return $this->createXMLDataSet ( __DIR__ . '/fixtures/config.xml' );
 	}
 	
 	public function test_column() {
+		print "test_column";
+		flush();
 		$this->db = $this->new_dbal ();
 		// This is how to instantiate db_tools in phpBB 3.2
 		$factory = new \phpbb\db\tools\factory ();

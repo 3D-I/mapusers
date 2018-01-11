@@ -26,7 +26,6 @@ class simple_test extends \phpbb_database_test_case {
 		$factory = new \phpbb\db\tools\factory ();
 		$this->db_tools = $factory->get ( $this->db );
 		$float_type = array (
-				'mysqli' => 'decimal(11,8)',
 				'mysql_41' => 'decimal(11,8)',
 				'mysql_40' => 'decimal(11,8)',
 				'oracle' => 'number(11, 8)',
@@ -35,9 +34,10 @@ class simple_test extends \phpbb_database_test_case {
 		foreach ( $float_type as $sql_layer => $type ) {
 			$this->db_tools->dbms_type_map [$sql_layer] ['FLOAT'] = $type;
 		}
-		var_dump($this->db_tools->dbms_type_map [$this->db->sql_layer]);
-		var_dump($this->db_tools->dbms_type_map);
-		print "test FLOAT available " . $this->db->sql_layer . "-" . $this->sql_layer . " ";
+		// seems like $this->db->sql_layer='mysqli' ??
+		var_dump($this->db_tools->dbms_type_map ['mysql_41']);
+		  // var_dump($this->db_tools->dbms_type_map);
+		print "test FLOAT available " . $this->db->sql_layer;
 		flush();
 		
 		parent::setUp();

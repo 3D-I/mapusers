@@ -41,27 +41,12 @@ class install_user_schema extends \phpbb\db\migration\container_aware_migration 
 		return array (
 				'add_tables' => array (
 						$this->table_prefix . 'mapusers_geolocation' => array (
-								'COLUMNS' => array (
-										'user_id' => array (
-												'UINT',
-												'0'
-										),
-										'latitude' => array (
-												'FLOAT',
-												null
-										),
-										'longitude' => array (
-												'FLOAT',
-												null
-										),
-										'location' => array (
-												'VCHAR:255',
-												null 
-										),
-										'is_valid' => array (
-												'BOOL',
-												0 
-										) 
+								'COLUMNS' => array(
+										'user_id' => array('UINT', 0),
+										'latitude' => array ('FLOAT', 0),
+										'longitude' => array ('FLOAT', 0),
+										'location' => array ('VCHAR:255', ''),
+										'is_valid' => array ('BOOL', 0),
 								),
 								'PRIMARY_KEY' => 'user_id' 
 						) 

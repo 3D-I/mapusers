@@ -31,6 +31,9 @@ class mainxhr {
 	/* @var \phpbb\driver_interface */
 	protected $db;
 	
+	/* @var \phpbb\auth\auth */
+	protected $auth;
+	
 	/* @var \myersware\mapusers\geocoder\geocoder */
 	protected $geocoder;
 	
@@ -42,15 +45,18 @@ class mainxhr {
 	 * @param \phpbb\request\request_interface $request
 	 * @param \phpbb\user $user
 	 * @param \phpbb\db\driver\factory $db
+	 * @param \phpbb\auth\auth $auth
 	 * @param \myersware\mapusers\geocoder\geocoder $geocoder
 	 */
 	public function __construct(\phpbb\config\config $config, \phpbb\controller\helper $helper, 
 			\phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\db\driver\factory $db,
+			\phpbb\auth\auth $auth,
 			\myersware\mapusers\geocoder\geocoder $geocoder) {
 		$this->config = $config;
 		$this->helper = $helper;
 		$this->request = $request;
 		$this->user = $user;
+		$this->auth = $auth;
 		$this->db = $db;
 		$this->geocoder = $geocoder;
 	}
@@ -68,19 +74,19 @@ class mainxhr {
 	public function handle($name) {
 		global $table_prefix;
 		global $phpbb_container;
-		global $auth;
 		
-		if (! $auth->acl_get ( 'u_mapusers_view' )) {
-			throw new \phpbb\exception\http_exception ( 403, "NOT_AUTHORISED" );
+		if (! $this->auth->acl_get ( 'u_mapusers_view' )) {
+			// throw new \phpbb\exception\http_exception ( 403, "NOT_AUTHORISED" );
 		}
 		$this->table_prefix = $table_prefix;
 		$api_key = $this->config ['mapusers_gapi_key'];
 		$geo_table = $phpbb_container->getParameter ( 'myersware.mapusers.tables.mapusers' );
-		
+		// var_dump ($this->user->data);
 		$username = $this->request->variable ( 'name', $this->user->data ['username'] );
 		$q_radius = $this->request->variable ( 'radius', 100 );
 		$q_limit = $this->request->variable ( 'limit', 20 );
 		$address = $this->request->variable ( 'address', '' );
+		$sid = $this->request->variable('sid', 0);
 		$geo_data = null;
 		if ($name == 'searchUser' || $address == '') {
 			$sql = 'SELECT * FROM ' . $geo_table . ' geo, ' . $table_prefix . 'users u, ' . $table_prefix . 'groups gr' . ' WHERE u.username="' . $username . '" AND u.user_id=geo.user_id' . ' AND u.group_id=gr.group_id AND u.user_id=geo.user_id AND geo.is_valid=1';
@@ -89,14 +95,15 @@ class mainxhr {
 				$row = $this->db->sql_fetchrow ( $result );
 				if ($row) {
 					// var_dump($row);
+					$address = $row['location'];
 					$geo_data = array (
 						'lat' => $row ['latitude'],
-						'lnt' => $row ['longitude'] 
+						'lng' => $row ['longitude'] 
 					);
 					// var_dump($geo_data);
 					$this->user->get_profile_fields ( $row ['user_id'] );
 				} else {
-					throw new \phpbb\exception\http_exception ( 404, "User " . $username . " NOT_FOUND: has no location" );
+					throw new \phpbb\exception\http_exception ( 404, "NOT_FOUND: no location found for user " . $username );
 				}
 				$this->db->sql_freeresult ( $result );
 			} else {

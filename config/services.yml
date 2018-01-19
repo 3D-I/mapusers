@@ -9,6 +9,7 @@ services:
             - '@controller.helper'
             - '@template'
             - '@user'
+            - '@auth'
             
     myersware.mapusers.controller.xhr:
         class: myersware\mapusers\controller\mainxhr
@@ -18,6 +19,8 @@ services:
             - '@request'
             - '@user'
             - '@dbal.conn'
+            - '@auth'
+            - '@myersware.mapusers.geocoder'
 
     myersware.mapusers.service:
         class: myersware\mapusers\service

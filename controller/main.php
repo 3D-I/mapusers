@@ -62,7 +62,8 @@ class main {
 			$l_message = ! $this->config ['myersware_mapusers_goodbye'] ? 'MAPUSERS_HELLO' : 'MAPUSERS_GOODBYE';
 			$this->template->assign_vars ( array (
 					'MAPUSERS_MESSAGE' => $this->user->lang ( $l_message, $this->user->data ['username'] ),
-					'GAPI_KEY' => $this->config ['mapusers_gapi_key'] 
+					'GAPI_KEY' => $this->config ['mapusers_gapi_key'],
+					'MAPUSER_USER' => $this->user->data ['username']
 			) );
 			return $this->helper->render ( 'mapusers_body.html', $name );
 		} else {

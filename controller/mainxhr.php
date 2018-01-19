@@ -76,7 +76,7 @@ class mainxhr {
 		global $phpbb_container;
 		
 		if (! $this->auth->acl_get ( 'u_mapusers_view' )) {
-			// throw new \phpbb\exception\http_exception ( 403, "NOT_AUTHORISED" );
+			throw new \phpbb\exception\http_exception ( 403, "NOT_AUTHORISED" );
 		}
 		$this->table_prefix = $table_prefix;
 		$api_key = $this->config ['mapusers_gapi_key'];
@@ -86,7 +86,6 @@ class mainxhr {
 		$q_radius = $this->request->variable ( 'radius', 100 );
 		$q_limit = $this->request->variable ( 'limit', 20 );
 		$address = $this->request->variable ( 'address', '' );
-		$sid = $this->request->variable('sid', 0);
 		$geo_data = null;
 		if ($name == 'searchUser' || $address == '') {
 			$sql = 'SELECT * FROM ' . $geo_table . ' geo, ' . $table_prefix . 'users u, ' . $table_prefix . 'groups gr' . ' WHERE u.username="' . $username . '" AND u.user_id=geo.user_id' . ' AND u.group_id=gr.group_id AND u.user_id=geo.user_id AND geo.is_valid=1';

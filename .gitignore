@@ -1,2 +1,6 @@
 /vendor/
 /_/
+/composer.phar
+/phpunit.phar
+/.project
+/.buildpath

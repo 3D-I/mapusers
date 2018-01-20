@@ -20,7 +20,7 @@ class demo_test extends \phpbb_functional_test_case {
 		);
 	}
 	
-	public function test_login()
+	public function xxtest_login()
 	{
 		$this->login();
 		// check for logout link
@@ -28,7 +28,7 @@ class demo_test extends \phpbb_functional_test_case {
 		$this->assertContains($this->lang('LOGOUT', 'admin'), $crawler->filter('.navbar')->text());
 	}
 	
-	public function test_login_other()
+	public function xxtest_login_other()
 	{
 		$this->create_user('anothertestuser');
 		$this->login('anothertestuser');
@@ -36,7 +36,7 @@ class demo_test extends \phpbb_functional_test_case {
 		$this->assertContains('anothertestuser', $crawler->filter('#username_logged_in')->text());
 	}
 	
-	public function test_myersware_mapusers() {
+	public function xxtest_myersware_mapusers() {
 		$this->create_user('anothertestuser');
 		$this->login('anothertestuser');
 		try

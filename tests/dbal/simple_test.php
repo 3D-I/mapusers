@@ -55,7 +55,7 @@ class simple_test extends \phpbb_database_test_case {
 		return $this->createXMLDataSet ( __DIR__ . '/fixtures/config.xml' );
 	}
 	
-	public function test_column() {
+	public function xxtest_column() {
 		print "test_column";
 		echo "test_column";
 		flush();

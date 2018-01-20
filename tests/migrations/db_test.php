@@ -46,12 +46,12 @@ class add_database_changes_test extends \phpbb_database_test_case
         $this->db_tools = $factory->get ( $this->db );
     }
 
-    public function test_mapusers_geolocation_column()
+    public function xxtest_mapusers_geolocation_column()
     {
         $this->assertTrue($this->db_tools->sql_column_exists($this->table_prefix . 'mapusers_geolocation', 'latitude'), 'Asserting that column "latitude" exists');
     }
 
-    public function test_mapusers_geolocation_demo_table()
+    public function xxtest_mapusers_geolocation_demo_table()
     {
         $this->assertFalse($this->db_tools->sql_table_exists($this->table_prefix . 'mapusers_geolocation_demo'), 'Asserting that table "' . $this->table_prefix . 'geolocation_demo" does not exist');
     }

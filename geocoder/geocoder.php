@@ -56,8 +56,8 @@ class geocoder {
 		// do geocoding for users needing it
 		$sql = 'SELECT p.user_id, p.pf_phpbb_location FROM ' . $this->table_prefix . 'profile_fields_data p ' . 
 				'LEFT JOIN ' . $this->table_prefix . 'mapusers_geolocation g ' . 'ON p.user_id=g.user_id' . 
-			' WHERE g.is_valid=0 OR g.user_id IS NULL LIMIT ' . $this->limit;
-		$result = $this->db->sql_query ( $sql );
+				' WHERE g.is_valid=0 OR g.user_id IS NULL';
+		$result = $this->db->sql_query_limit( $sql, $this->limit );
 		$rowCount = 0;
 		while ( $row = $this->db->sql_fetchrow ( $result ) ) {
 			$rowCount++;

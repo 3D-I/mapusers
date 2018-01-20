@@ -132,7 +132,7 @@ class mainxhr {
 			$q_lat = $p_geo_data ['lat'];
 			$q_lng = $p_geo_data ['lng'];
 			if (! $q_lat) {
-				throw new \phpbb\exception\http_exception ( 500, "Location " . $address . " NOT_FOUND: invalid geo_data=" . var_dump ( $p_geo_data ) );
+				throw new \phpbb\exception\http_exception ( 500, "Location " . $address . " NOT_FOUND: invalid geo_data=" . $p_geo_data );
 			}
 			$sql = 'SELECT u.user_id, u.username, p.pf_phpbb_location, gr.group_colour, l.latitude, l.longitude, ( 3959 * acos( cos( radians(' . $q_lat . ') ) * cos( radians( l.latitude ) ) * cos( radians( l.longitude ) - radians(' . $q_lng . ') ) + sin( radians(' . $q_lat . ') ) * sin( radians( l.latitude ) ) ) ) AS distance ' . 'FROM  ' . $geo_table . ' g, ' . $table_prefix . 'users u, ' . $table_prefix . 'groups gr' . ', ' . $table_prefix . 'profile_fields_data p, ' . $table_prefix . 'mapusers_geolocation l' . ' WHERE g.user_id=u.user_id AND p.user_id=g.user_id AND l.user_id=u.user_id AND u.group_id=gr.group_id AND g.is_valid=1' . ' HAVING distance < ' . $q_radius . ' ORDER BY distance LIMIT 0 , ' . $q_limit;
 			$result = $this->db->sql_query ( $sql );

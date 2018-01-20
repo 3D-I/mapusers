@@ -25,7 +25,6 @@ class main_listener implements EventSubscriberInterface {
 				'core.permissions' => 'set_permissions',
 				'core.user_setup' => 'load_language_on_setup',
 				'core.page_header' => 'add_page_header_link',
-				'core.ucp_profile_info_modify_sql_ary' => 'get_geo_data_ucp',
 				'core.acp_users_profile_modify_sql_ary' => 'get_geo_data_acp' 
 		);
 	}
@@ -136,26 +135,5 @@ class main_listener implements EventSubscriberInterface {
 			return;
 		}
 		$this->geocoder->update_user_geodata( $user_id, $cp_data ['pf_phpbb_location'] );
-	}
-	
-	/**
-	 * User profile UCP exit to lookup geo data if location known.
-	 * $event contains: cp_data, data, sql_ary
-	 *
-	 * @param \phpbb\event\data $event
-	 *        	Event object
-	 */
-	public function get_geo_data_ucp($event) {
-		global $user;
-		
-		$cp_data = $event ['cp_data']; // custom profile data
-		$data = $event ['data']; // user profile data
-		$sql_ary = $event ['sql_ary']; // ignore
-		// determine if location field is modified. If not, return with no action
-		$this->user->get_profile_fields ( $user->data['user_id'] );
-		if ($this->user->profile_fields['pf_phpbb_location'] == $cp_data ['pf_phpbb_location']) {
-			return;
-		}
-		$this->geocoder->update_user_geodata( $user->data['user_id'], $cp_data ['pf_phpbb_location'] );
 	}
 }

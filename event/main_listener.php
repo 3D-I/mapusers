@@ -108,8 +108,13 @@ class main_listener implements EventSubscriberInterface {
 			$this->template->assign_vars ( array (
 					'U_MAPUSERS_PAGE' => $this->helper->route ( 'myersware_mapusers_controller_main', array (
 							'name' => 'showmap' 
-					) ) 
+					) ),
+					'U_MAPUSERS_VIEW' => 1
 			) );
+		} else {
+			$this->template->assign_vars ( array (
+				'U_MAPUSERS_VIEW' => 0
+					) );
 		}
 	}
 	

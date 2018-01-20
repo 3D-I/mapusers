@@ -2579,17 +2579,17 @@
     },
     {
         "name": "phpbb/epv",
-        "version": "0.0.10",
-        "version_normalized": "0.0.10.0",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/phpbb/epv.git",
-            "reference": "75292f984501d49994fc3b3f0cddb98a9e34083b"
+            "reference": "ea3c2ffb30fad0898fe401b34ad0657f502d2ab8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpbb/epv/zipball/75292f984501d49994fc3b3f0cddb98a9e34083b",
-            "reference": "75292f984501d49994fc3b3f0cddb98a9e34083b",
+            "url": "https://api.github.com/repos/phpbb/epv/zipball/ea3c2ffb30fad0898fe401b34ad0657f502d2ab8",
+            "reference": "ea3c2ffb30fad0898fe401b34ad0657f502d2ab8",
             "shasum": ""
         },
         "require": {
@@ -2607,12 +2607,12 @@
             "phpunit/phpunit": "4.4.*",
             "phpunit/phpunit-mock-objects": "2.3.*"
         },
-        "time": "2017-12-16T20:24:38+00:00",
+        "time": "2018-01-02T11:32:47+00:00",
         "bin": [
             "src/EPV.php"
         ],
         "type": "library",
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-4": {
                 "Phpbb\\Epv\\": "src/"

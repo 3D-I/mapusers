@@ -59,7 +59,9 @@ var AppComponent = (function () {
     function AppComponent(http, __zone) {
         this.http = http;
         this.__zone = __zone;
-        this.mapCenter = [];
+        this.lat = 20.0;
+        this.lng = -20.0;
+        this.mapCenter = { lat: this.lat, lng: this.lng };
         this.foundUser = false;
         this.selectOptions = [];
         this.selectedLocation = 0;
@@ -69,8 +71,6 @@ var AppComponent = (function () {
         this.loadSearchLocation = '/app.php/mapusers/xhr/searchLocation';
         this.positions = [];
         this.items = [];
-        this.lat = 20.0;
-        this.lng = -20.0;
         this.info = {
             id: 0,
             display: false,
@@ -94,18 +94,37 @@ var AppComponent = (function () {
         };
         this.doSearchUser();
     }
+    AppComponent.prototype.onInit = function (map) {
+        this.map = map;
+        this.fitBounds(this.map);
+    };
+    AppComponent.prototype.fitBounds = function (map) {
+        if (!map) {
+            return;
+        }
+        // console.log('fitBounds map=', map);
+        if (map.markers) {
+            var bounds_1 = new google.maps.LatLngBounds();
+            // console.log('map.markers=', map.markers);
+            map.markers.forEach(function (marker) {
+                /// console.log('set bounds for marker=', marker);
+                bounds_1.extend(marker.position);
+                // console.log('Extend bounds=', bounds);
+            });
+            // console.log('Fit map to bounds=', bounds);
+            map.fitBounds(bounds_1);
+        }
+    };
     AppComponent.prototype.log = function (event, str) {
         if (event instanceof MouseEvent) {
             return false;
         }
         console.log('event .... >', event, str);
     };
-    AppComponent.prototype.onMapReady = function (map) {
-        console.log('map', map);
-        console.log('markers', map.markers); // to get all markers as an array
-    };
     AppComponent.prototype.onIdle = function (event) {
-        console.log('map', event.target);
+        // console.log('map idle ', event.target);
+        this.map = event.target;
+        this.fitBounds(this.map);
     };
     AppComponent.prototype.onMarkerInit = function (marker) {
         console.log('marker', marker);
@@ -123,10 +142,10 @@ var AppComponent = (function () {
         var thisLoc = this.users.find(function (k) { return Number(k.id) === Number(_this.selectedLocation); });
         console.log('thisLoc(', this.selectedLocation, ')=', thisLoc);
         if (thisLoc.geo.latitude) {
-            this.mapCenter = [Number(thisLoc.geo.latitude), Number(thisLoc.geo.longitude)];
+            this.mapCenter = { lat: Number(thisLoc.geo.latitude), lng: Number(thisLoc.geo.longitude) };
         }
         else {
-            this.mapCenter = [this.lat, this.lng];
+            this.mapCenter = { lat: this.lat, lng: this.lng };
         }
         console.log('mapCenter=', this.mapCenter);
     };
@@ -154,10 +173,10 @@ var AppComponent = (function () {
             // this.positions.push({latlng: [Number(this.info.geo.latitude), Number(this.info.geo.longitude)], item: this.info});
             console.log('initial position=', _this.positions);
             if (_this.info.geo.latitude) {
-                _this.mapCenter = [Number(_this.info.geo.latitude), Number(_this.info.geo.longitude)];
+                _this.mapCenter = { lat: Number(_this.info.geo.latitude), lng: Number(_this.info.geo.longitude) };
             }
             else {
-                _this.mapCenter = [_this.lat, _this.lng];
+                _this.mapCenter = { lat: Number(_this.lat), lng: Number(_this.lng) };
             }
             console.log('mapCenter=', _this.mapCenter);
             _this.foundUser = true;
@@ -206,7 +225,7 @@ var AppComponent = (function () {
                 var item = items_1[_i];
                 // console.log('insert new ', item);
                 if (firstItem) {
-                    _this.mapCenter = [Number(item.geo.latitude), Number(item.geo.longitude)];
+                    _this.mapCenter = { lat: Number(item.geo.latitude), lng: Number(item.geo.longitude) };
                     firstItem = false;
                 }
                 _this.getIconUrl(item);
@@ -226,6 +245,8 @@ var AppComponent = (function () {
                 _this.selectOptions.push([item.id, item.forum, item.iconUrl]);
                 // this.updateItem(item, true);
             }
+            // map won't have markers yet, so wait a bit to set bounds
+            _this.fitBounds(_this.map);
             // console.log('selectOptions=', this.selectOptions);
         }, function (err) {
             if (err.error instanceof Error) {
@@ -258,7 +279,7 @@ var AppComponent = (function () {
         this.infoWindow.profileUrl = '/memberlist.php?mode=viewprofile&u=' + marker.item.id;
         this.infoWindow.display = true;
         console.log('info=', this.infoWindow);
-        this.mapCenter = [Number(this.infoWindow.geo.latitude), Number(this.infoWindow.geo.longitude)];
+        this.mapCenter = { lat: Number(this.infoWindow.geo.latitude), lng: Number(this.infoWindow.geo.longitude) };
         // console.log('infoWindows=', event.target.nguiMapComponent.infoWindows);
         event.target.nguiMapComponent.openInfoWindow('iw-user', event.target);
     };
@@ -287,7 +308,7 @@ var AppComponent = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-gm',
             styles: [__webpack_require__("../../../../../src/app/app.component.css")],
-            template: "\n          <h1>Forum User Locations</h1>\n          <div>\n            <div><h2 *ngIf=\"searchErrorMessage\" >Search error {{ searchErrorMessage }}</h2>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchUser\" placeholder=\"User forum name\">\n                <mat-error *ngIf=\"searchErrorMessage\">{{searchErrorMessage}}</mat-error>\n            </mat-form-field>\n            <div  class=\"button-row\">\n            <button mat-raised-button color=\"primary\"\n                    (click)=\"doSearchUser()\" [disabled]=\"!searchUser || !searchRadius\">\n                Search by forum user name\n            </button>\n            </div>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchLocation\" placeholder=\"Search location\">\n                <mat-error *ngIf=\"searchErrorMessage\">{{searchErrorMessage}}</mat-error>\n            </mat-form-field>\n            <div  class=\"button-row\">\n            <button mat-raised-button color=\"primary\"\n                    (click)=\"doSearchLocation(this.searchLocation)\" [disabled]=\"!searchLocation || !searchRadius\">\n                Search by location\n            </button>\n            </div>\n            <div>\n             Radius(km)={{ searchRadius }}\n            <mat-slider [(ngModel)]=\"searchRadius\" (input)=\"this.onSliderChange($event)\"\n                min=\"100\" max=\"20000\" step=\"100\" value=\"200\">\n            </mat-slider>\n            </div>\n            <div>\n             Limit to {{ searchLimit }} closest:\n            <mat-slider [(ngModel)]=\"searchLimit\" (input)=\"this.onLimitChange($event)\"\n                min=\"10\" max=\"100\" step=\"10\" value=\"20\">\n            </mat-slider>\n            </div>\n            <h2>Search near selected user</h2>\n            <div>\n                <mat-form-field *ngIf=\"selectOptions\">\n                    <mat-select placeholder=\"Pick a user\" name=\"selectUser\"\n                        [(ngModel)]=\"selectedLocation\" (selectionChange)=\"showLocation()\">\n                        <mat-option *ngFor=\"let opt of selectOptions\" [value]=\"opt[0]\">\n                            {{ opt[1] }}\n                        </mat-option>\n                    </mat-select>\n                </mat-form-field>\n            </div>\n          <ngui-map center=\"{{ mapCenter }}\"\n            [zoom]=\"3\"\n            [zoomControlOptions]=\"{position: 'TOP_CENTER'}\"\n            [fullscreenControl]=\"true\"\n            [fullscreenControlOptions]=\"{position: 'TOP_CENTER'}\"\n            (click)=\"log($event)\"\n            [scrollwheel]=\"false\">\n            <marker *ngFor=\"let pos of positions\" [position]=\"pos.latlng\"\n                    [icon]=\"pos.item.icon\" [label]=\"pos.item.label\"\n                     (click)=\"markerClicked($event, pos)\">\n            </marker>\n            <info-window id=\"iw-user\">\n                <div *ngIf=\"infoWindow.display\">\n                    <a href=\"{{ infoWindow.profileUrl }}\">{{ infoWindow.forum_name }} @ {{ infoWindow.location }}</a>\n                </div>\n            </info-window>\n          </ngui-map>\n\n          "
+            template: "\n          <h1>Forum User Locations</h1>\n          <div>\n            <div><h2 *ngIf=\"searchErrorMessage\" >Search error {{ searchErrorMessage }}</h2>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchUser\" placeholder=\"User forum name\">\n                <mat-error *ngIf=\"searchErrorMessage\">{{searchErrorMessage}}</mat-error>\n            </mat-form-field>\n            <div  class=\"button-row\">\n            <button mat-raised-button color=\"primary\"\n                    (click)=\"doSearchUser()\" [disabled]=\"!searchUser || !searchRadius\">\n                Search by forum user name\n            </button>\n            </div>\n            <mat-form-field>\n                <input matInput [(ngModel)]=\"searchLocation\" placeholder=\"Search location\">\n                <mat-error *ngIf=\"searchErrorMessage\">{{searchErrorMessage}}</mat-error>\n            </mat-form-field>\n            <div  class=\"button-row\">\n            <button mat-raised-button color=\"primary\"\n                    (click)=\"doSearchLocation(this.searchLocation)\" [disabled]=\"!searchLocation || !searchRadius\">\n                Search by location\n            </button>\n            </div>\n            <div>\n             Radius(km)={{ searchRadius }}\n            <mat-slider [(ngModel)]=\"searchRadius\" (input)=\"this.onSliderChange($event)\"\n                min=\"100\" max=\"20000\" step=\"100\" value=\"200\">\n            </mat-slider>\n            </div>\n            <div>\n             Limit to {{ searchLimit }} closest:\n            <mat-slider [(ngModel)]=\"searchLimit\" (input)=\"this.onLimitChange($event)\"\n                min=\"10\" max=\"100\" step=\"10\" value=\"20\">\n            </mat-slider>\n            </div>\n            <h2>Search near selected user</h2>\n            <div>\n                <mat-form-field *ngIf=\"selectOptions\">\n                    <mat-select placeholder=\"Pick a user\" name=\"selectUser\"\n                        [(ngModel)]=\"selectedLocation\" (selectionChange)=\"showLocation()\">\n                        <mat-option *ngFor=\"let opt of selectOptions\" [value]=\"opt[0]\">\n                            {{ opt[1] }}\n                        </mat-option>\n                    </mat-select>\n                </mat-form-field>\n            </div>\n          <ngui-map center=\"{{ mapCenter }}\"\n             (mapReady$)=\"onInit($event)\"\n             (idle)=\"onIdle($event)\"\n            [zoom]=\"3\"\n            [zoomControlOptions]=\"{position: 'TOP_CENTER'}\"\n            [fullscreenControl]=\"true\"\n            [fullscreenControlOptions]=\"{position: 'TOP_CENTER'}\"\n            (click)=\"log($event)\"\n            [scrollwheel]=\"false\">\n            <marker *ngFor=\"let pos of positions\" [position]=\"pos.latlng\"\n                    [icon]=\"pos.item.icon\" [label]=\"pos.item.label\"\n                     (click)=\"markerClicked($event, pos)\">\n            </marker>\n            <info-window id=\"iw-user\">\n                <div *ngIf=\"infoWindow.display\">\n                    <a href=\"{{ infoWindow.profileUrl }}\">{{ infoWindow.forum_name }} @ {{ infoWindow.location }}</a>\n                </div>\n            </info-window>\n          </ngui-map>          "
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_common_http__["a" /* HttpClient */],
             __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */]])

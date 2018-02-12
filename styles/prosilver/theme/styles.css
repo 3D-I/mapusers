@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+#user-map {
+    height: 600px;
+    width: 100%;
+}
+.fa-times-thin:before {
+    content: '\00d7';
+}
+.ui#content{
+  margin-top: 0;
+}
+.userListElement {
+	width: 200px;
+	z-index: 1;
+	background-color: lightgrey;
+})

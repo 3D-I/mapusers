@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/bin/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 26);
+/******/ 	return __webpack_require__(__webpack_require__.s = 27);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -959,7 +959,7 @@ var transition = function transition(opts, state) {
 
 "use strict";
 /* unused harmony export componentConfig */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_style__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_style__ = __webpack_require__(33);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0_polythene_style__["a"]; });
 // Placeholder for custom theme config file
 // In your app paths setup, change the current path to your custom config file; see the theme README.
@@ -1001,7 +1001,7 @@ var componentConfig = {};
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Icon; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_icon__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_icon__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_svg__ = __webpack_require__(19);
 
 
@@ -1030,7 +1030,7 @@ Icon.displayName = "Icon";
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Shadow; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_shadow__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_shadow__ = __webpack_require__(40);
 
 
 
@@ -2304,7 +2304,7 @@ m.vnode = Vnode
 if (true) module["exports"] = m
 else window.m = m
 }());
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27).setImmediate, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28).setImmediate, __webpack_require__(9)))
 
 /***/ }),
 /* 6 */
@@ -2671,7 +2671,7 @@ module.exports = g;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Ripple; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_ripple__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_ripple__ = __webpack_require__(34);
 
 
 
@@ -2689,7 +2689,7 @@ Ripple.displayName = "Ripple";
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListTile; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_list_tile__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_list_tile__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_icon__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_ripple__ = __webpack_require__(10);
 
@@ -3201,7 +3201,7 @@ var Timer = function Timer() {
 //src/index.js
 var m = __webpack_require__(5);
 
-var UserMapPage = __webpack_require__(30);
+var UserMapPage = __webpack_require__(31);
 
 m.mount(document.getElementById("mapusersApp"), UserMapPage);
 
@@ -3212,11 +3212,11 @@ m.mount(document.getElementById("mapusersApp"), UserMapPage);
 "use strict";
 
 
-var _polytheneMithril = __webpack_require__(31);
-
-__webpack_require__(75);
+var _polytheneMithril = __webpack_require__(32);
 
 __webpack_require__(76);
+
+__webpack_require__(77);
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -3232,15 +3232,17 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 var m = __webpack_require__(5);
 
-var Stream = __webpack_require__(77);
+var Stream = __webpack_require__(78);
 
-var _require = __webpack_require__(79),
+var _require = __webpack_require__(80),
     Form = _require.Form,
     Field = _require.Field,
     ValidationError = _require.ValidationError;
 
 // Default Material Design styles including Roboto font
 var UserMap = __webpack_require__(25);
+
+var Users = __webpack_require__(26);
 
 var UserControl =
 /*#__PURE__*/
@@ -3346,28 +3348,54 @@ function () {
       return SearchLimit;
     }(Field);
 
+    var SelectUser =
+    /*#__PURE__*/
+    function (_Field5) {
+      _inherits(SelectUser, _Field5);
+
+      function SelectUser() {
+        var _ref5;
+
+        var _temp5, _this5;
+
+        _classCallCheck(this, SelectUser);
+
+        for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+          args[_key5] = arguments[_key5];
+        }
+
+        return _possibleConstructorReturn(_this5, (_temp5 = _this5 = _possibleConstructorReturn(this, (_ref5 = SelectUser.__proto__ || Object.getPrototypeOf(SelectUser)).call.apply(_ref5, [this].concat(args))), _this5.validate = function (value, allValues) {
+          console.log("validate select user=", value);
+        }, _temp5));
+      }
+
+      return SelectUser;
+    }(Field);
+
     var SearchForm =
     /*#__PURE__*/
     function (_Form) {
       _inherits(SearchForm, _Form);
 
       function SearchForm() {
-        var _ref5;
+        var _ref6;
 
-        var _temp5, _this5;
+        var _temp6, _this6;
 
         _classCallCheck(this, SearchForm);
 
-        for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-          args[_key5] = arguments[_key5];
+        for (var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+          args[_key6] = arguments[_key6];
         }
 
-        return _possibleConstructorReturn(_this5, (_temp5 = _this5 = _possibleConstructorReturn(this, (_ref5 = SearchForm.__proto__ || Object.getPrototypeOf(SearchForm)).call.apply(_ref5, [this].concat(args))), _this5.searchForum = SearchForumField.new(), _this5.searchLocation = SearchLocationField.new(), _this5.searchRadius = SearchRadius.new(), _this5.searchLimit = SearchLimit.new(), _temp5));
-      }
+        return _possibleConstructorReturn(_this6, (_temp6 = _this6 = _possibleConstructorReturn(this, (_ref6 = SearchForm.__proto__ || Object.getPrototypeOf(SearchForm)).call.apply(_ref6, [this].concat(args))), _this6.searchForum = SearchForumField.new(), _this6.searchLocation = SearchLocationField.new(), _this6.searchRadius = SearchRadius.new(), _this6.searchLimit = SearchLimit.new(), _temp6));
+      } // selectUser = SelectUser.new()
+
 
       return SearchForm;
     }(Form);
 
+    this.showList = false;
     this.form = SearchForm.new();
     this.form.searchRadius.setData(200);
     this.form.searchLimit.setData(20);
@@ -3403,14 +3431,71 @@ function () {
   }
 
   _createClass(UserControl, [{
+    key: "enableList",
+    value: function enableList() {
+      console.log("menu clicked"); // handle clicks outside menu to collapse it
+
+      var bodyTag = document.getElementsByTagName('body');
+      var element = document.getElementById('mapUserList');
+      var el = clickedOrNot.bind(this);
+
+      function clickedOrNot(e) {
+        if (e.target !== element) {
+          // action in the case of click outside 
+          bodyTag[0].removeEventListener('click', el, true);
+          console.log("got outside menu click");
+          this.showList = false;
+          m.redraw(); // mouse click won't force redraw for menu
+        }
+      }
+
+      bodyTag[0].addEventListener('click', el, true);
+      this.showList = true;
+    }
+  }, {
     key: "view",
     value: function view() {
+      var _this7 = this;
+
       var form = this.form;
-      console.log("UserControl view, form=", this.form);
+      console.log("UserControl view, form=", this.form, "showList=", this.showList); // confirm('view')
+
       var errors = this.form.getError();
       var submitFailed = this.submitFailed;
       var formErrors = form.formErrors;
-      return m("form", {
+      var profileUrl = "/memberlist.php?mode=viewprofile&u=";
+      var SelectUser = {
+        view: function view(_ref7) {
+          var attrs = _ref7.attrs;
+
+          var createOption = function createOption(_ref8) {
+            var id = _ref8.id,
+                forum = _ref8.forum;
+            return m(_polytheneMithril.ListTile, {
+              class: "userListElement",
+              url: {
+                href: profileUrl + id
+              },
+              title: forum
+            });
+          };
+
+          var tb = m(_polytheneMithril.Toolbar, {
+            compact: true
+          }, [m("div#mapUserList", {
+            onclick: m.withAttr("", _this7.enableList, _this7)
+          }, m("span.fas.fa-bars")), m(_polytheneMithril.ToolbarTitle, {
+            text: "Select user"
+          })]); // console.log("tb=", tb)
+
+          var list = m(_polytheneMithril.List, {
+            class: "userListElement"
+          }, [Users.list.map(createOption)]); // console.log("list=", list)
+
+          return _this7.showList ? list : tb;
+        }
+      };
+      return m(".ui#page", [m(".ui#header", m(SelectUser)), m(".ui#content", [m("form", {
         onsubmit: this.submit.bind(this)
       }, [m(".row", [m(".component", m(_polytheneMithril.TextField, {
         label: "Forum user name",
@@ -3421,14 +3506,11 @@ function () {
         },
         help: "Enter a forum user name"
       }))]), m(".row", [m(_polytheneMithril.RaisedButton, {
+        className: "mdl-button.mdl-js-button.mdl-button--colored",
         events: {
           onclick: this.submit.bind(this)
         },
-        disabled: !form.searchForum.getData(),
-        style: {
-          backgroundColor: "blue",
-          color: "white"
-        }
+        disabled: !form.searchForum.getData()
       }, "Search by forum user name")]), m(".row", [m(".component", m(_polytheneMithril.TextField, {
         label: "Location",
         floatingLabel: true,
@@ -3441,14 +3523,10 @@ function () {
         events: {
           onclick: this.submit.bind(this)
         },
-        disabled: !form.searchLocation.getData(),
-        style: {
-          backgroundColor: "blue",
-          color: "white"
-        }
-      }, "Search by location")]), m(".row", [m(".title", "Radius(km)"), m(".component", m(_polytheneMithril.Slider, {
-        onChange: function onChange(_ref6) {
-          var value = _ref6.value;
+        disabled: !form.searchLocation.getData()
+      }, "Search by location")]), m(".row", [m(".title", "Radius=" + form.searchRadius.getData() + " km"), m(".component", m(_polytheneMithril.Slider, {
+        onChange: function onChange(_ref9) {
+          var value = _ref9.value;
           console.log("radius=", value);
           form.searchRadius.setData(value);
         },
@@ -3456,9 +3534,9 @@ function () {
         max: 25000,
         defaultValue: 200,
         stepSize: 100
-      }))]), m(".row", [m(".title", "Limit to closest"), m(".component", m(_polytheneMithril.Slider, {
-        onChange: function onChange(_ref7) {
-          var value = _ref7.value;
+      }))]), m(".row", [m(".title", "Limit to closest " + form.searchLimit.getData() + " users"), m(".component", m(_polytheneMithril.Slider, {
+        onChange: function onChange(_ref10) {
+          var value = _ref10.value;
           console.log("limit=", value);
           form.searchLimit.setData(value);
         },
@@ -3466,7 +3544,8 @@ function () {
         max: 100,
         defaultValue: 20,
         stepSize: 10
-      }))])]);
+      }))])])] // end of form
+      )]); // end of page
     }
   }]);
 
@@ -3705,7 +3784,7 @@ var vars$1 = {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SVG; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_svg__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_svg__ = __webpack_require__(38);
 
 
 
@@ -3725,7 +3804,7 @@ SVG.displayName = "SVG";
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DialogPane; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_dialog_pane__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_dialog_pane__ = __webpack_require__(45);
 
 
 
@@ -3743,7 +3822,7 @@ DialogPane.displayName = "DialogPane";
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RaisedButton; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_raised_button__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_raised_button__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_button__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_shadow__ = __webpack_require__(4);
 
@@ -4065,7 +4144,7 @@ var transitions = {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RadioButton; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_radio_button__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_radio_button__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_selection_control__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_icon__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_polythene_mithril_icon_button__ = __webpack_require__(7);
@@ -4113,7 +4192,7 @@ RadioButton.displayName = "RadioButton";
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextField; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_textfield__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_textfield__ = __webpack_require__(65);
 
 
 
@@ -4130,7 +4209,7 @@ TextField.displayName = "TextField";
 
 var m = __webpack_require__(5);
 
-var Users = __webpack_require__(80);
+var Users = __webpack_require__(26);
 
 var UserControl = __webpack_require__(17);
 
@@ -4206,7 +4285,7 @@ var UserMap = {
       path: fontawesomeMarkers.MAP_MARKER,
       scale: 0.3,
       strokeOpacity: 1,
-      fillColor: item.color,
+      fillColor: "#" + item.color,
       fillOpacity: 0.7
     };
   },
@@ -4333,117 +4412,33 @@ var UserMap = {
     console.log("doSearchUser parms=", attrs);
     this.searchErrorMessage = null;
     Users.searchUsers({
-      name: attrs.user,
+      user: attrs.user,
       radius: attrs.radius ? String(attrs.radius) : undefined,
       limit: attrs.limit ? String(attrs.limit) : undefined
     }).then(function (result) {
-      console.log("doSearchUser: ", result);
+      console.log("doSearchUser results: ", result);
 
       _this.addMarkers(Users.list);
     });
-    /*
-    this.http.get(this.loadSearchUser, {params: params, headers: headers})
-    .subscribe(
-            data => {
-                console.log('getUser data=', data);
-                this.info = data[0];
-                // console.log('home info=', this.info);
-                this.searchLocation = this.info.location;
-                this.getIconUrl(this.info);
-                // this.positions.push({latlng: [Number(this.info.geo.latitude), Number(this.info.geo.longitude)], item: this.info});
-                console.log('initial position=', this.positions);
-                if (this.info.geo.latitude) {
-                    this.mapCenter = {lat: Number(this.info.geo.latitude), lng: Number(this.info.geo.longitude)};
-                } else {
-                    this.mapCenter = {lat: Number(this.lat), lng: Number(this.lng)};
-                }
-                console.log('mapCenter=', this.mapCenter);
-                this.foundUser = true;
-                this.doSearchLocation(this.searchLocation);
-            }, (err: HttpErrorResponse) => {
-                if (err.error instanceof Error) {
-                    console.log('doSearchUser client error=', err);
-                    this.searchErrorMessage = err['error']['message'];
-                    this.foundUser = false;
-                  } else {
-                      console.log('doSearchUser server error=', err);
-                      this.searchErrorMessage = err['error']['message'];
-                      this.foundUser = false;
-                  }
-                });
-                */
   },
 
   /**
    * @param center - either null or an address
    */
-  doSearchLocation: function doSearchLocation(center) {
-    console.log('reloading from Remote..., center=', center);
+  doSearchLocation: function doSearchLocation(attrs) {
+    var _this2 = this;
+
+    console.log("doSearchLocation parms=", attrs);
     this.searchErrorMessage = null;
-    this.clearLocations();
-    var items;
-    /*
-    const headers = new HttpHeaders()
-        .set('X-Requested-With', 'XMLHttpRequest')
-        .set('responseType', 'json');
-    // console.log('added headers=', headers);
-    let params = null;
-    if (center) {
-        params = new HttpParams().set('address', center)
-            .set('radius', String(this.searchRadius))
-            .set('limit', String(this.searchLimit));
-        console.log('reload params=', params);
-    }
-    this.http.get(this.loadSearchLocation, {params: params, headers: headers})
-    .subscribe(
-            data => {
-                console.log('remote data=', data);
-                items = data;
-                this.users = items;
-                // console.log('load items=', items);
-                let firstItem = true;
-                for (const item of items) {
-                    // console.log('insert new ', item);
-                    if (firstItem) {
-                        this.mapCenter = {lat: Number(item.geo.latitude), lng: Number(item.geo.longitude)};
-                        firstItem = false;
-                    }
-                    this.getIconUrl(item);
-                    this.info = {id: item.id,
-                            geo: {latitude: Number(item.geo.latitude),
-                                longitude: Number(item.geo.longitude)},
-                            display: true,
-                            color: item.color,
-                            forum_name: item.forum,
-                            location: item.location,
-                            iconUrl: item.iconUrl,
-                            label: null,
-                    };
-                    if (item.geo.latitude) {
-                        this.positions.push({latlng: [Number(item.geo.latitude), Number(item.geo.longitude)], item: item});
-                    }
-                    this.selectOptions.push([item.id, item.forum, item.iconUrl]);
-                    // this.updateItem(item, true);
-                }
-                // map won't have markers yet, so wait a bit to set bounds
-                setTimeout(() => {
-                    console.log('Async Task Calling Callback');
-                    this.fitBounds(this.map);
-                  }, 500);
-                // console.log('selectOptions=', this.selectOptions);
-            },
-            (err: HttpErrorResponse) => {
-                if (err.error instanceof Error) {
-                    console.log('doSearchUser client error=', err);
-                    this.searchErrorMessage = err['error']['message'];
-                    this.foundUser = false;
-                  } else {
-                      console.log('doSearchUser server error=', err);
-                      this.searchErrorMessage = err['error']['message'];
-                      this.foundUser = false;
-                  }
-                });
-                */
+    Users.searchUsers({
+      location: attrs.location,
+      radius: attrs.radius ? String(attrs.radius) : undefined,
+      limit: attrs.limit ? String(attrs.limit) : undefined
+    }).then(function (result) {
+      console.log("doSearchLocation: ", result);
+
+      _this2.addMarkers(Users.list);
+    });
   },
   search: function search(searchParms) {
     console.log("search map parms=", searchParms);
@@ -4460,13 +4455,13 @@ var UserMap = {
     this.searchParms = searchParms; // for use in then statements
 
     if (searchParms.location) {
-      this.doSearchLocation(this.searchParms).bind(this);
+      this.doSearchLocation(this.searchParms);
     } else if (searchParms.user) {
-      this.doSearchUser(this.searchParms).bind(this);
+      this.doSearchUser(this.searchParms);
     }
   },
   oncreate: function oncreate(vnode) {
-    var _this2 = this;
+    var _this3 = this;
 
     console.log('oncreate map');
     var opts = {
@@ -4479,7 +4474,7 @@ var UserMap = {
       console.log("center_changed");
     });
     Users.searchUsers().then(function () {
-      _this2.addMarkers(Users.list);
+      _this3.addMarkers(Users.list);
     });
   },
   view: function view(vnode) {
@@ -4492,13 +4487,76 @@ module.exports = UserMap;
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(16);
-__webpack_require__(16);
-(function webpackMissingModule() { throw new Error("Cannot find module \"C:\\Users\\myers\\git\\mapusersApp\\bin\\app.js\""); }());
+// src/models/User.js
+var m = __webpack_require__(5);
 
+var crashersJson = "\n{\n\t\"crashers\": [\n\t\t{\n\t\t    \"id\": 2,\n\t\t    \"key\": 2,\n\t\t\t\"forum\": \"Ilona\",\n\t\t\t\"name\": \"Ilona Ciunaite\",\n\t\t\t\"role\": \"guide\",\n\t\t\t\"color\": \"ff0000\",\n\t\t\t\"location\": \"Playa del Carmen, Quintana Roo, Mexico\",\n\t\t\t\"distance\": 5000,\n\t\t\t\"geo\": {\n\t\t\t     \"latitude\": 20.6296,\n\t\t\t     \"longitude\": -87.0739\n\t\t\t     }\n\t\t},\n\t\t{\n\t\t    \"id\": 48,\n\t\t    \"key\": 48,\n\t\t\t\"forum\": \"jjm109\",\n\t\t\t\"name\": \"James Myers\",\n\t\t\t\"role\": \"crasher\",\n\t\t\t\"color\": \"0000ff\",\n\t\t\t\"location\": \"Paradise, CA, USA\",\n\t\t\t\"distance\": 0,\n\t\t\t\"geo\": {\n    \t\t\t\"latitude\": 39.7596,\n\t       \t\t\"longitude\": -121.6219\n\t       \t\t}\n\t\t},\n        {\n            \"id\": 10851,\n            \"key\": 10851,\n            \"forum\": \"forgetmenot\",\n            \"name\": \"Kay Nieminen\",\n            \"role\": \"guide\",\n            \"color\": \"ff0000\",\n            \"location\": \"Australia\",\n            \"distance\": 15000,\n            \"geo\": {\n                \"latitude\": -25.27,\n                \"longitude\": 133.77\n                }\n        }\n\t],\n\t\"description\": \"LU Crashers.\",\n\t\"name\": \"LU Crashers\"\n}\n";
+var Users = {
+  list: [],
+  error: null,
+  searchAttrs: {},
+  loadSearchUser: '/app.php/mapusers/xhr/searchUser',
+  loadSearchLocation: '/app.php/mapusers/xhr/searchLocation',
+  searchUsers: function searchUsers(attrs) {
+    var data = {};
+    var url = null;
+
+    if (!attrs) {
+      attrs = {};
+    }
+
+    if (attrs.radius !== undefined) {
+      data.radius = String(attrs.radius);
+    }
+
+    if (attrs.limit !== undefined) {
+      data.limit = String(attrs.limit);
+    }
+
+    if (!attrs.location) {
+      if (attrs.user !== undefined) {
+        data.name = attrs.user;
+      }
+
+      url = this.loadSearchUser;
+    } else {
+      data.location = attrs.location;
+      url = this.loadSearchLocation;
+    }
+
+    console.log("searchUsers qs=", data);
+    return m.request({
+      method: "GET",
+      url: url,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      data: data
+    }).then(function (result) {
+      console.log("searchUser: ", result);
+      Users.list = result; // console.log('Users.list = ', Users.list)
+    }).catch(function (e) {
+      Users.error = e.message;
+      console.log("search get error: ", Users.error);
+      Users.list = JSON.parse(crashersJson).crashers;
+      console.log('Mock Users.list = ', Users.list);
+      return Promise.resolve(Users.list);
+    });
+  }
+};
+module.exports = Users;
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(16);
+__webpack_require__(16);
+(function webpackMissingModule() { throw new Error("Cannot find module \"bin/app.js\""); }());
+
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
@@ -4551,7 +4609,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(28);
+__webpack_require__(29);
 // On some exotic environments, it's not clear which object `setimmeidate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -4565,7 +4623,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -4755,10 +4813,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(29)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(30)))
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -4948,7 +5006,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var m = __webpack_require__(5);
@@ -4958,27 +5016,19 @@ var UserControl = __webpack_require__(17);
 var UserMap = __webpack_require__(25);
 
 var UserMapPage = function () {
-  var x = 0;
-
-  function ctrl(vnode) {
-    /*...*/
-    return;
-  }
-
   function view(vnode) {
-    return m("user-map-page", [m("h1", "Forum User Locations"), m("#user-form-div", m(UserControl)), m("#user-map-div", m(UserMap))]);
+    return m("user-map-page", [m("#user-form-div", m(UserControl)), m("#user-map-div", m(UserMap))]);
   }
 
   return {
-    view: view,
-    oninit: ctrl
+    view: view
   };
 }();
 
 module.exports = UserMapPage;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4990,62 +5040,62 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "ViewComponent", function() { return __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__["b"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_mithril_button__ = __webpack_require__(8);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Button", function() { return __WEBPACK_IMPORTED_MODULE_1_polythene_mithril_button__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_card__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_card__ = __webpack_require__(35);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Card", function() { return __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_card__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_checkbox__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_checkbox__ = __webpack_require__(41);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Checkbox", function() { return __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_checkbox__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_polythene_mithril_dialog__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_polythene_mithril_dialog__ = __webpack_require__(43);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "DialogInstance", function() { return __WEBPACK_IMPORTED_MODULE_4_polythene_mithril_dialog__["b"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Dialog", function() { return __WEBPACK_IMPORTED_MODULE_4_polythene_mithril_dialog__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_polythene_mithril_dialog_pane__ = __webpack_require__(20);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "DialogPane", function() { return __WEBPACK_IMPORTED_MODULE_5_polythene_mithril_dialog_pane__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_polythene_mithril_fab__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_polythene_mithril_fab__ = __webpack_require__(46);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "FAB", function() { return __WEBPACK_IMPORTED_MODULE_6_polythene_mithril_fab__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_polythene_mithril_icon__ = __webpack_require__(3);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Icon", function() { return __WEBPACK_IMPORTED_MODULE_7_polythene_mithril_icon__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_polythene_mithril_icon_button__ = __webpack_require__(7);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "IconButton", function() { return __WEBPACK_IMPORTED_MODULE_8_polythene_mithril_icon_button__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_polythene_mithril_ios_spinner__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_polythene_mithril_ios_spinner__ = __webpack_require__(49);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "IOSSpinner", function() { return __WEBPACK_IMPORTED_MODULE_9_polythene_mithril_ios_spinner__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_polythene_mithril_list__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_polythene_mithril_list__ = __webpack_require__(51);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "List", function() { return __WEBPACK_IMPORTED_MODULE_10_polythene_mithril_list__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_polythene_mithril_list_tile__ = __webpack_require__(11);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "ListTile", function() { return __WEBPACK_IMPORTED_MODULE_11_polythene_mithril_list_tile__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_polythene_mithril_material_design_progress_spinner__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_polythene_mithril_material_design_progress_spinner__ = __webpack_require__(53);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "MaterialDesignProgressSpinner", function() { return __WEBPACK_IMPORTED_MODULE_12_polythene_mithril_material_design_progress_spinner__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_polythene_mithril_material_design_spinner__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_polythene_mithril_material_design_spinner__ = __webpack_require__(55);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "MaterialDesignSpinner", function() { return __WEBPACK_IMPORTED_MODULE_13_polythene_mithril_material_design_spinner__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_polythene_mithril_menu__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_polythene_mithril_menu__ = __webpack_require__(57);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Menu", function() { return __WEBPACK_IMPORTED_MODULE_14_polythene_mithril_menu__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_polythene_mithril_notification__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_polythene_mithril_notification__ = __webpack_require__(59);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "NotificationInstance", function() { return __WEBPACK_IMPORTED_MODULE_15_polythene_mithril_notification__["b"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Notification", function() { return __WEBPACK_IMPORTED_MODULE_15_polythene_mithril_notification__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_polythene_mithril_radio_button__ = __webpack_require__(23);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "RadioButton", function() { return __WEBPACK_IMPORTED_MODULE_16_polythene_mithril_radio_button__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_polythene_mithril_radio_group__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_polythene_mithril_radio_group__ = __webpack_require__(61);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "RadioGroup", function() { return __WEBPACK_IMPORTED_MODULE_17_polythene_mithril_radio_group__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_polythene_mithril_raised_button__ = __webpack_require__(21);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "RaisedButton", function() { return __WEBPACK_IMPORTED_MODULE_18_polythene_mithril_raised_button__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_polythene_mithril_ripple__ = __webpack_require__(10);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Ripple", function() { return __WEBPACK_IMPORTED_MODULE_19_polythene_mithril_ripple__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_polythene_mithril_search__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20_polythene_mithril_search__ = __webpack_require__(63);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Search", function() { return __WEBPACK_IMPORTED_MODULE_20_polythene_mithril_search__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21_polythene_mithril_shadow__ = __webpack_require__(4);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Shadow", function() { return __WEBPACK_IMPORTED_MODULE_21_polythene_mithril_shadow__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_polythene_mithril_slider__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22_polythene_mithril_slider__ = __webpack_require__(66);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Slider", function() { return __WEBPACK_IMPORTED_MODULE_22_polythene_mithril_slider__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_polythene_mithril_snackbar__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23_polythene_mithril_snackbar__ = __webpack_require__(68);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SnackbarInstance", function() { return __WEBPACK_IMPORTED_MODULE_23_polythene_mithril_snackbar__["b"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Snackbar", function() { return __WEBPACK_IMPORTED_MODULE_23_polythene_mithril_snackbar__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_polythene_mithril_svg__ = __webpack_require__(19);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "SVG", function() { return __WEBPACK_IMPORTED_MODULE_24_polythene_mithril_svg__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_polythene_mithril_switch__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25_polythene_mithril_switch__ = __webpack_require__(70);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Switch", function() { return __WEBPACK_IMPORTED_MODULE_25_polythene_mithril_switch__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_polythene_mithril_tabs__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_polythene_mithril_tabs__ = __webpack_require__(72);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Tabs", function() { return __WEBPACK_IMPORTED_MODULE_26_polythene_mithril_tabs__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_polythene_mithril_textfield__ = __webpack_require__(24);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "TextField", function() { return __WEBPACK_IMPORTED_MODULE_27_polythene_mithril_textfield__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_polythene_mithril_toolbar__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_polythene_mithril_toolbar__ = __webpack_require__(74);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Toolbar", function() { return __WEBPACK_IMPORTED_MODULE_28_polythene_mithril_toolbar__["a"]; });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "ToolbarTitle", function() { return __WEBPACK_IMPORTED_MODULE_28_polythene_mithril_toolbar__["b"]; });
 
@@ -5080,7 +5130,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5197,7 +5247,7 @@ var vars = {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5390,13 +5440,13 @@ var vars$1 = {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Card; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_card__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_card__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_icon__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_list_tile__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_polythene_mithril_shadow__ = __webpack_require__(4);
@@ -5438,7 +5488,7 @@ Card.displayName = "Card";
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5894,7 +5944,7 @@ var vars$1 = {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5970,7 +6020,7 @@ var vars$1 = {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6030,7 +6080,7 @@ var vars = {
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6212,7 +6262,7 @@ var vars$1 = {
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6297,13 +6347,13 @@ var vars$1 = {
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Checkbox; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_checkbox__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_checkbox__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_selection_control__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_icon__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_polythene_mithril_icon_button__ = __webpack_require__(7);
@@ -6345,7 +6395,7 @@ Checkbox.displayName = "Checkbox";
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6391,7 +6441,7 @@ var checkbox = Object.freeze({
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6399,7 +6449,7 @@ var checkbox = Object.freeze({
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Dialog; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_dialog__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_dialog__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_dialog_pane__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_polythene_mithril_shadow__ = __webpack_require__(4);
 
@@ -6506,7 +6556,7 @@ Dialog.displayName = "Dialog";
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6782,7 +6832,7 @@ var transitions = {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7014,13 +7064,13 @@ var vars$1 = {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FAB; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_fab__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_fab__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_icon__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_raised_button__ = __webpack_require__(21);
 
@@ -7046,7 +7096,7 @@ FAB.displayName = "FAB";
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7126,7 +7176,7 @@ var vars$1 = {
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7277,14 +7327,14 @@ var vars$1 = {
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IOSSpinner; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_ios_spinner__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_ios_spinner__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_base_spinner__ = __webpack_require__(13);
 
 
@@ -7342,7 +7392,7 @@ IOSSpinner.displayName = "IOSSpinner";
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7405,13 +7455,13 @@ var vars$1 = {
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return List; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_list__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_list__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_list_tile__ = __webpack_require__(11);
 
 
@@ -7434,7 +7484,7 @@ List.displayName = "List";
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7564,14 +7614,14 @@ var vars$1 = {
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MaterialDesignProgressSpinner; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_material_design_progress_spinner__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_material_design_progress_spinner__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_base_spinner__ = __webpack_require__(13);
 
 
@@ -7631,7 +7681,7 @@ MaterialDesignProgressSpinner.displayName = "MaterialDesignProgressSpinner";
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7821,14 +7871,14 @@ var spinner = Object.freeze({
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MaterialDesignSpinner; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_material_design_spinner__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_material_design_spinner__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_base_spinner__ = __webpack_require__(13);
 
 
@@ -7892,7 +7942,7 @@ MaterialDesignSpinner.displayName = "MaterialDesignSpinner";
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8014,14 +8064,14 @@ var vars$2 = {
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Menu; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_menu__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_menu__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_shadow__ = __webpack_require__(4);
 
 
@@ -8100,7 +8150,7 @@ Menu.displayName = "Menu";
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8435,7 +8485,7 @@ var vars$1 = {
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8493,7 +8543,7 @@ Notification.displayName = "Notification";
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8539,13 +8589,13 @@ var radioButton = Object.freeze({
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RadioGroup; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_radio_group__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_radio_group__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_radio_button__ = __webpack_require__(23);
 
 
@@ -8565,7 +8615,7 @@ RadioGroup.displayName = "RadioGroup";
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8647,13 +8697,13 @@ var radioGroup = Object.freeze({
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Search; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_search__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_search__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_textfield__ = __webpack_require__(24);
 
 
@@ -8673,7 +8723,7 @@ Search.displayName = "Search";
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8796,7 +8846,7 @@ var vars$1 = {
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9197,13 +9247,13 @@ var vars$1 = {
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Slider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_slider__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_slider__ = __webpack_require__(67);
 
 
 
@@ -9215,7 +9265,7 @@ Slider.displayName = "Slider";
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9672,7 +9722,7 @@ var slider = Object.freeze({
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9680,7 +9730,7 @@ var slider = Object.freeze({
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Snackbar; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_snackbar__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_snackbar__ = __webpack_require__(69);
 
 
 
@@ -9743,7 +9793,7 @@ Snackbar.displayName = "Snackbar";
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9829,13 +9879,13 @@ var transitions = {
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Switch; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_switch__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_switch__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_core_selection_control__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_shadow__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_polythene_mithril_icon_button__ = __webpack_require__(7);
@@ -9877,7 +9927,7 @@ Switch.displayName = "Switch";
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10024,13 +10074,13 @@ var vars$3 = _extends$2({}, __WEBPACK_IMPORTED_MODULE_1_polythene_core_selection
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Tabs; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_tabs__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_tabs__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_polythene_mithril_icon__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_polythene_mithril_button__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_polythene_mithril_icon_button__ = __webpack_require__(7);
@@ -10073,7 +10123,7 @@ Tabs.displayName = "Tabs";
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10594,14 +10644,14 @@ var scrollButton = Object.freeze({
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Toolbar; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ToolbarTitle; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_polythene_mithril_base__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_toolbar__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_polythene_core_toolbar__ = __webpack_require__(75);
 
 
 
@@ -10617,7 +10667,7 @@ ToolbarTitle.displayName = "ToolbarTitle";
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10740,12 +10790,6 @@ var vars$1 = {
 
 
 /***/ }),
-/* 75 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 76 */
 /***/ (function(module, exports) {
 
@@ -10753,16 +10797,22 @@ var vars$1 = {
 
 /***/ }),
 /* 77 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(78)
+module.exports = __webpack_require__(79)
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* eslint-disable */
@@ -10929,7 +10979,7 @@ else window.m = {stream : createStream}
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11296,69 +11346,6 @@ module.exports = {
   Field: Field,
   ValidationError: ValidationError
 };
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// src/models/User.js
-var m = __webpack_require__(5);
-
-var crashersJson = "\n{\n\t\"crashers\": [\n\t\t{\n\t\t    \"id\": 2,\n\t\t    \"key\": 2,\n\t\t\t\"forum\": \"Ilona\",\n\t\t\t\"name\": \"Ilona Ciunaite\",\n\t\t\t\"role\": \"guide\",\n\t\t\t\"color\": \"red\",\n\t\t\t\"location\": \"Playa del Carmen, Quintana Roo, Mexico\",\n\t\t\t\"distance\": 5000,\n\t\t\t\"geo\": {\n\t\t\t     \"latitude\": 20.6296,\n\t\t\t     \"longitude\": -87.0739\n\t\t\t     }\n\t\t},\n\t\t{\n\t\t    \"id\": 48,\n\t\t    \"key\": 48,\n\t\t\t\"forum\": \"jjm109\",\n\t\t\t\"name\": \"James Myers\",\n\t\t\t\"role\": \"crasher\",\n\t\t\t\"color\": \"blue\",\n\t\t\t\"location\": \"Paradise, CA, USA\",\n\t\t\t\"distance\": 0,\n\t\t\t\"geo\": {\n    \t\t\t\"latitude\": 39.7596,\n\t       \t\t\"longitude\": -121.6219\n\t       \t\t}\n\t\t},\n        {\n            \"id\": 10851,\n            \"key\": 10851,\n            \"forum\": \"forgetmenot\",\n            \"name\": \"Kay Nieminen\",\n            \"role\": \"guide\",\n            \"color\": \"red\",\n            \"location\": \"Australia\",\n            \"distance\": 15000,\n            \"geo\": {\n                \"latitude\": -25.27,\n                \"longitude\": 133.77\n                }\n        }\n\t],\n\t\"description\": \"LU Crashers.\",\n\t\"name\": \"LU Crashers\"\n}\n";
-var Users = {
-  list: [],
-  error: null,
-  searchAttrs: {},
-  loadSearchUser: '/app.php/mapusers/xhr/searchUser',
-  loadSearchLocation: '/app.php/mapusers/xhr/searchLocation',
-  searchUsers: function searchUsers(attrs) {
-    var data = {};
-    var url = null;
-
-    if (!attrs) {
-      attrs = {};
-    }
-
-    if (attrs.radius !== undefined) {
-      data.radius = String(attrs.radius);
-    }
-
-    if (attrs.limit !== undefined) {
-      data.limit = String(attrs.limit);
-    }
-
-    if (!attrs.location) {
-      if (attrs.user !== undefined) {
-        data.name = attrs.user;
-      }
-
-      url = this.loadSearchUser;
-    } else {
-      data.location = attrs.location;
-      url = this.loadSearchLocation;
-    }
-
-    console.log("searchUsers qs=", data);
-    return m.request({
-      method: "GET",
-      url: url,
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      data: data
-    }).then(function (result) {
-      console.log("searchUser: ", result);
-      Users.list = result; // console.log('Users.list = ', Users.list)
-    }).catch(function (e) {
-      Users.error = e.message;
-      console.log("search get error: ", Users.error);
-      Users.list = JSON.parse(crashersJson).crashers;
-      console.log('Mock Users.list = ', Users.list);
-      return Promise.resolve(Users.list);
-    });
-  }
-};
-module.exports = Users;
 
 /***/ }),
 /* 81 */
